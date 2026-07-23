@@ -1,0 +1,36 @@
+# Who gets automatically asked to review what.
+#
+# This does not block anyone from reviewing anything, and it does not replace
+# the rule that a pull request needs one approval from another developer.
+# It just means the right person is notified without anyone having to remember.
+#
+# Replace the placeholder usernames with real GitHub handles after the Friday
+# meeting. Until then GitHub silently ignores lines it cannot resolve, so the
+# file is harmless as it stands but is not doing anything for you yet.
+
+# Anything not matched below.
+*                                       @BHARGAV-GITHUB-USERNAME
+
+# The three frozen contracts. Bhargav reviews every change to these, because a
+# change here breaks other teams silently rather than loudly.
+/packages/contracts/src/interfaces/      @BHARGAV-GITHUB-USERNAME
+/packages/api-spec/openapi.yaml          @BHARGAV-GITHUB-USERNAME
+/packages/ballot/src/schema.ts           @BHARGAV-GITHUB-USERNAME
+
+# CI, secrets handling and branch rules.
+/.github/                                @BHARGAV-GITHUB-USERNAME
+/.gitleaks.toml                          @BHARGAV-GITHUB-USERNAME
+
+# Sub-team ownership.
+/packages/contracts/                     @TIRTHESH @RAHUL @UTKARSH
+/packages/ballot/                        @UTKARSH
+/packages/ui/                            @SAKSHI
+/apps/web/app/(voter)/                   @NIHARIKA @ADARSH
+/apps/web/components/wallet/             @ADARSH
+/apps/web/app/(admin)/                   @DIMPLE
+/apps/web/app/(audit)/                   @VARSHITHA
+/apps/web/app/api/                       @ANUSHA
+/packages/db/                            @HET
+/packages/api-spec/                       @ANUSHA
+/apps/indexer/                           @HET
+/infra/                                  @HET

@@ -1,0 +1,30 @@
+{
+  "name": "@veratalley/contracts",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "VeraTalley smart contracts, tests and deployments",
+  "scripts": {
+    "build": "hardhat compile",
+    "compile": "hardhat compile",
+    "test": "hardhat test",
+    "test:solidity": "hardhat test solidity",
+    "coverage": "hardhat coverage",
+    "typecheck": "hardhat compile --quiet && tsc --noEmit",
+    "lint": "solhint 'src/**/*.sol'",
+    "gen:abi": "node scripts/export-abi.js",
+    "deploy:amoy": "hardhat ignition deploy ignition/modules/ElectionFactory.ts --network amoy",
+    "verify:amoy": "hardhat verify --network amoy"
+  },
+  "devDependencies": {
+    "@nomicfoundation/hardhat-ignition": "^3.1.8",
+    "@nomicfoundation/hardhat-toolbox-viem": "^5.0.7",
+    "@openzeppelin/contracts": "5.6.1",
+    "@types/node": "^22.20.1",
+    "forge-std": "github:foundry-rs/forge-std#v1.9.4",
+    "hardhat": "^3.11.1",
+    "solhint": "^6.0.1",
+    "typescript": "^5.9.3",
+    "viem": "^2.55.8"
+  }
+}

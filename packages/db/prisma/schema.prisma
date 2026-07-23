@@ -1,0 +1,38 @@
+// VeraTalley database schema.
+//
+// SKELETON. VT-109, Het (PT-1) fills this in.
+//
+// The datasource and generator below are done, so `prisma generate` runs and
+// the package typechecks. The four models are the agreed shape, listed here so
+// that VT-110 (the API spec) and Week 2's indexer are not each inventing their
+// own field names. Add them for real, then create the first migration.
+//
+// Models to add, from the issue:
+//
+//   Election      address, name, startTime, endTime, publicKey, createdAtBlock
+//   Ballot        electionAddress, sequence, ballotHash, voterAddress,
+//                 ciphertext, txHash, blockNumber, castAt
+//   Voter         electionAddress, walletAddress, registeredAtBlock,
+//                 revokedAtBlock
+//   IndexerState  electionAddress, lastProcessedBlock
+//
+// Indexes, which are the part that is easy to forget and expensive to add late:
+//
+//   @@unique([electionAddress, sequence])       one ballot per sequence number
+//   @@unique([electionAddress, voterAddress])   one ballot per wallet
+//   @@index([txHash])                           receipt lookup by transaction
+//
+// Two conventions that matter across the whole project, from the handbook:
+//
+//   Addresses are stored checksummed, exactly as they appear on chain.
+//   Big numbers are strings, never Int. blockNumber will exceed 2^53 and
+//   JavaScript loses precision above that. Use String or Decimal, not Int.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}

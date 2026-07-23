@@ -1,0 +1,15 @@
+node_modules
+.next
+dist
+build
+out
+coverage
+artifacts
+cache
+pnpm-lock.yaml
+packages/api-spec/types.ts
+packages/contracts/types/generated
+
+# The original prototype, kept unchanged for reference. Reformatting it would
+# produce a large diff over code nobody is going to edit. See prototype/README.md
+prototype

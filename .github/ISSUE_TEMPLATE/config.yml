@@ -1,0 +1,14 @@
+blank_issues_enabled: true
+
+contact_links:
+  - name: I am blocked and need an answer
+    url: https://github.com/dojoga1/VeraTalley/blob/develop/CONTRIBUTING.md#getting-stuck
+    about: >
+      Email your buddy first, then send a [BLOCKED] email to Bhargav. You get a
+      reply within 12 hours, any day including weekends. Do not sit stuck.
+
+  - name: Something looks like a security problem
+    url: https://github.com/dojoga1/VeraTalley/blob/develop/SECURITY.md
+    about: >
+      Email Bhargav directly. Do not open a public issue, because the tracker is
+      public and that tells everyone before there is a fix.

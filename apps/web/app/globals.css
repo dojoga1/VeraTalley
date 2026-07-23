@@ -1,0 +1,50 @@
+@import 'tailwindcss';
+
+/*
+ * Design tokens.
+ *
+ * These are placeholders so the skeleton renders. VT-106 (Sakshi) replaces this
+ * block with the real design system, checks every pair against WCAG 2.1 AA, and
+ * builds `/design` to show every component in every state.
+ *
+ * Until that lands, use these variables rather than raw hex values anywhere, so
+ * that VT-106 can change the palette in one place instead of ten.
+ */
+@theme {
+  --color-background: oklch(1 0 0);
+  --color-foreground: oklch(0.21 0.006 285.9);
+  --color-muted: oklch(0.96 0.001 286.4);
+  --color-muted-foreground: oklch(0.55 0.014 285.9);
+  --color-primary: oklch(0.49 0.217 264.4);
+  --color-primary-foreground: oklch(0.98 0 0);
+  --color-border: oklch(0.92 0.004 286.3);
+  --color-destructive: oklch(0.58 0.237 28.5);
+  --color-success: oklch(0.6 0.15 149.2);
+
+  --radius: 0.5rem;
+}
+
+@media (prefers-color-scheme: dark) {
+  @theme {
+    --color-background: oklch(0.14 0.005 285.8);
+    --color-foreground: oklch(0.98 0 0);
+    --color-muted: oklch(0.27 0.006 286);
+    --color-muted-foreground: oklch(0.71 0.013 286.1);
+    --color-border: oklch(0.27 0.006 286);
+  }
+}
+
+body {
+  background: var(--color-background);
+  color: var(--color-foreground);
+}
+
+/*
+ * Every interactive element must show where the keyboard is. This is a floor,
+ * not the final design: keyboard operability is on the Definition of Done for
+ * every UI issue and is never cut.
+ */
+:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}

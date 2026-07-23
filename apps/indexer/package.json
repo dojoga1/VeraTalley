@@ -1,0 +1,21 @@
+{
+  "name": "@veratalley/indexer",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Reads BallotCast events into PostgreSQL. Owned by PT-1. Week 2.",
+  "scripts": {
+    "dev": "tsx watch src/main.ts",
+    "start": "tsx src/main.ts",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@veratalley/db": "workspace:*",
+    "viem": "^2.55.8"
+  },
+  "devDependencies": {
+    "@types/node": "^22.20.1",
+    "tsx": "^4.20.6",
+    "typescript": "^5.9.3"
+  }
+}

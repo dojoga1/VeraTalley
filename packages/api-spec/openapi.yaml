@@ -1,0 +1,154 @@
+openapi: 3.1.0
+
+# SKELETON. VT-110, Anusha (PT-2) writes the real specification.
+#
+# This file is the REST contract: one of the project's three frozen contracts.
+# It freezes on Monday 27 July 2026. After that, adding a new optional field is
+# fine; renaming or removing one needs a pull request labelled `contract-change`
+# and Bhargav's approval.
+#
+# What is here now is the smallest thing that validates and generates types, so
+# that the toolchain is proven before anyone depends on it. Everything below the
+# health endpoint is listed in the issue and is yours to write:
+#
+#   GET  /api/v1/elections
+#   GET  /api/v1/elections/{address}
+#   GET  /api/v1/elections/{address}/ballots        paginated
+#   POST /api/v1/receipts
+#   GET  /api/v1/receipts/{receiptId}
+#   POST /api/v1/admin/elections/{address}/voters   CSV roll upload
+#   GET  /api/v1/elections/{address}/export.csv
+#
+# Two rules that override anything convenient:
+#
+#   1. There is no POST /api/v1/vote, and there never will be. A vote never
+#      passes through our backend. If you find yourself writing an endpoint that
+#      accepts a vote, stop and email Bhargav.
+#   2. Big numbers are strings. Times are RFC 3339, always UTC. Addresses are
+#      checksummed. See docs/api-contract.md section 6.6.
+
+info:
+  title: VeraTalley API
+  version: 0.1.0
+  summary: Read-only views of on-chain election data, plus ballot receipts.
+  description: |
+    VeraTalley records ballots on Polygon Amoy. This API never accepts a vote.
+
+    The voter's browser seals the ballot and the voter's wallet sends it
+    straight to the blockchain. This server finds out afterwards by reading the
+    chain, exactly as any member of the public could. That is what makes the
+    receipts worth having: if the server recorded whatever the browser claimed,
+    a receipt would prove nothing.
+  license:
+    name: MIT
+    identifier: MIT
+
+servers:
+  - url: http://localhost:3000
+    description: Local development
+  # The production server is added in Week 4, once the domain exists. Adding a
+  # placeholder host now means client generators emit a URL that resolves to
+  # somebody else's server, which is a bad failure to debug.
+
+tags:
+  - name: System
+    description: Liveness and diagnostics.
+  - name: Elections
+    description: Read-only election and ballot data, mirrored from the chain.
+  - name: Receipts
+    description: Proof that a ballot was recorded on chain.
+
+paths:
+  /api/v1/health:
+    get:
+      operationId: getHealth
+      tags: [System]
+      summary: Liveness check, including whether the chain is reachable.
+      # Public, deliberately. An empty array means this operation overrides any
+      # global security requirement and needs no credentials.
+      security: []
+      responses:
+        "200":
+          description: The service is up and the RPC endpoint answered.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Health"
+        "429":
+          description: Too many requests from this client.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "503":
+          description: The RPC endpoint could not be reached.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+components:
+  securitySchemes:
+    adminSession:
+      type: apiKey
+      in: cookie
+      name: veratalley_session
+      description: >
+        Set by POST /api/v1/auth/verify after a successful Sign In With Ethereum
+        exchange, and only for the wallet that owns the election factory. The
+        cookie is httpOnly, sameSite=lax, and secure in production, so it is
+        never readable from JavaScript. See docs/siwe.md and VT-107.
+
+  schemas:
+    Health:
+      type: object
+      required: [status, version, chainId, blockNumber]
+      properties:
+        status:
+          type: string
+          enum: [ok, degraded]
+        version:
+          type: string
+          examples: ["0.1.0"]
+        chainId:
+          type: integer
+          examples: [80002]
+        blockNumber:
+          type: string
+          description: >
+            Latest block height, read live from the chain. A decimal string,
+            not a number: block heights exceed 2^53 and JavaScript loses
+            precision above that.
+          examples: ["42906388"]
+
+    ErrorCode:
+      type: string
+      description: >
+        The frontend switches on this value and never on `message`, because
+        messages get reworded and that would break the UI silently.
+      enum:
+        - NOT_FOUND
+        - UNAUTHORIZED
+        - VALIDATION_FAILED
+        - BALLOT_NOT_FOUND
+        - CHAIN_UNAVAILABLE
+        - RATE_LIMITED
+        - INTERNAL
+
+    ErrorResponse:
+      type: object
+      required: [error]
+      properties:
+        error:
+          type: object
+          required: [code, message, traceId]
+          properties:
+            code:
+              $ref: "#/components/schemas/ErrorCode"
+            message:
+              type: string
+              description: Human readable. Never switch on this.
+            traceId:
+              type: string
+              description: Quote this in a bug report to find the request in the logs.
+              examples: ["01J8QW40T7X2"]
