@@ -20,9 +20,11 @@ takes an hour instead of ten minutes and it will sit unreviewed.
 
 ## Definition of Done
 
+- [ ] Finished, not "mostly working". Someone else could use this as it stands
 - [ ] CI green
 - [ ] Tests cover the failure cases, not only the success case
 - [ ] No new TypeScript, ESLint or solhint errors
+- [ ] **Only files belonging to my own issue are changed.** If not, I have said why below
 - [ ] If UI: works with a keyboard alone, and every control has a label
 - [ ] If it touches an interface or the API spec: types regenerated and committed
 - [ ] Demonstrated working, with a link or screenshot above

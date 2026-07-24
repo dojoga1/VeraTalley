@@ -169,8 +169,12 @@ Full explanation, with a worked example of casting a vote end to end:
 
 ## How we work
 
-Branch, pull request, one approval, merge. Nobody pushes directly to `main` or `develop`, including
-Bhargav.
+One meeting a week, on Friday. You get one issue, and it is finished and merged into `develop` by
+the next Friday. At that meeting everyone explains briefly what they built, and Bhargav says what
+comes next.
+
+Branch, pull request, one approval from your buddy, merge. Nobody pushes directly to `main` or
+`develop`, including Bhargav.
 
 ```bash
 git checkout develop
@@ -183,6 +187,15 @@ git push -u origin feature/VT-104-wallet-connect
 
 Then open a pull request into `develop` with `Closes #104` in the description. That closes the issue
 and moves the card by itself when it merges.
+
+**Two rules worth knowing before you start:**
+
+**Only change your own work.** Do not edit files that belong to somebody else's issue, even to fix
+something you spotted. Ask the owner, or ask Bhargav. Reading and reviewing other people's code is
+encouraged; editing it is not. This is the rule that will cost the project most if it is broken.
+
+**If the issue is unclear, ask Bhargav directly.** If it is a "how do I do this" question, ask your
+buddy first. Being stuck is normal. Staying quiet about it for a week is the only real failure.
 
 Details in [`CONTRIBUTING.md`](CONTRIBUTING.md).
 

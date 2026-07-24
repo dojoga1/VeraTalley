@@ -2,6 +2,56 @@
 
 Everything here is short on purpose. If a rule is not written down it is not a rule.
 
+## The week
+
+| When                    | What                                                                                                                  |
+| ----------------------- | --------------------------------------------------------------------------------------------------------------------- |
+| Friday, 12:30 to 13:30  | The only meeting. Everyone explains briefly what they did. Bhargav says what comes next and assigns the week's issues |
+| Saturday to Thursday    | You do your issue                                                                                                     |
+| By the following Friday | It is merged into `develop`, finished and working                                                                     |
+| Any time you are unsure | Ask your buddy. If it is a real doubt about what to build, ask Bhargav directly                                       |
+
+That is the whole process. One meeting a week, one issue each, done by the next meeting.
+
+**Finished means finished.** Not "mostly working", not "works on my machine", not "I will clean it
+up next week". It is merged into `develop`, CI is green, and someone else has looked at it. A
+half-done issue carried into next week is worse than a smaller issue completed, because everyone
+downstream of you plans around the first one being real.
+
+If your issue turns out bigger than it looked, say so **before** Friday and it gets made smaller.
+That is a completely normal thing to happen and it is not a failure. Going quiet and arriving on
+Friday with nothing is the only thing that actually hurts the project, because it costs a whole week
+instead of a conversation.
+
+## The rule that matters most: only change your own work
+
+**Do not edit code that belongs to someone else's issue.** Not to fix a bug you spotted, not to
+tidy something up, not because it was quicker than asking. This is the one rule that will cost the
+project most if it is broken.
+
+Two reasons, and the second is the one people underestimate.
+
+Ten people editing the same files in the same week produces conflicts that take longer to untangle
+than the original work took to write. And if two people change the same thing, the reason it broke
+is no longer findable: neither of you knows what the other assumed.
+
+`.github/CODEOWNERS` records who owns what. `apps/web/app/README.md` and the package READMEs say the
+same thing in words.
+
+**If you need something in somebody else's area changed**, there are exactly three options and none
+of them is editing it yourself:
+
+1. Message the owner and ask them to change it.
+2. If it blocks you today, email Bhargav and your buddy. That is what unblocking is for.
+3. Work around it for now and note it in your pull request so the owner can fix it properly.
+
+**Reading other people's code is encouraged. Editing it is not.** Reviewing a pull request means
+reading it and leaving a comment, which is exactly the point of having a buddy. If you think
+something in it is wrong, say so in a comment. Do not push a commit to their branch to fix it.
+
+The exception, and it is narrow: if a file is genuinely shared and your issue explicitly says you
+touch it, then you touch it, and you say so clearly in your pull request description.
+
 ## Branches
 
 ```
@@ -51,17 +101,35 @@ not nagging, it is the documented process.
 
 ## Reviewing
 
-You are expected to review roughly two per week. You are not expected to be an expert. Check four
-things and you have added real value:
+**Your buddy reviews your work, and you review theirs.** That is the normal path, and between the
+two of you most things get sorted without anybody else being involved.
+
+| You       | Your buddy |
+| --------- | ---------- |
+| Tirthesh  | Rahul      |
+| Rahul     | Tirthesh   |
+| Utkarsh   | Anusha     |
+| Niharika  | Adarsh     |
+| Adarsh    | Niharika   |
+| Sakshi    | Varshitha  |
+| Dimple    | Varshitha  |
+| Varshitha | Dimple     |
+| Het       | Anusha     |
+| Anusha    | Het        |
+
+You are not expected to be an expert. Check four things and you have added real value:
 
 1. Does it do what the issue said it would do?
 2. Is anything hardcoded that should be configurable, especially addresses, URLs and keys?
 3. Are there tests, and do they cover the failure cases and not only the happy path?
 4. Would you understand this code in three weeks?
 
-Approve, or leave a comment. **Leaving a pull request untouched for two days is the only wrong
-answer.** A fresher whose first pull request sits for four days learns that their work does not
-matter, and that is expensive to undo.
+**Leave a comment, or approve. Do not push a commit to their branch.** Reviewing means reading and
+saying what you think. Fixing it yourself is the one rule above, broken.
+
+**Leaving a pull request untouched for two days is the only wrong answer.** A fresher whose first
+pull request sits for four days learns that their work does not matter, and that is expensive to
+undo. If yours has been waiting more than a day, message your buddy, then Bhargav.
 
 Reviewing is not about finding fault. "This looks right to me, one question about line 40" is a
 complete and useful review.
@@ -107,16 +175,22 @@ All four are what CI runs. Running them locally first saves you a round trip.
 
 ## Getting stuck
 
-Email your buddy first. Most problems die there.
+**A doubt about what to build goes to Bhargav.** If the issue is unclear, or you are not sure what
+the right behaviour is, or you think the issue is wrong, ask him directly. Do not guess and do not
+work around it. If an issue was unclear, that is his mistake to fix, not yours to absorb.
 
-If that does not resolve it, send `[BLOCKED] VT-nnn short description` to Bhargav and your buddy.
-You get a reply within 12 hours, any day of the week including weekends.
+**A problem with how to build it goes to your buddy first.** Most things die there, and two people
+working it out between them is faster than waiting on one person's inbox.
+
+Either way, send it as `[BLOCKED] VT-nnn short description` so it is obvious what it is. You get a
+reply within 12 hours, any day of the week including weekends.
 
 Being stuck is normal. Staying quiet about being stuck is the one thing that actually hurts the
-project, because it costs a whole week rather than an hour.
+project, because it costs a whole week rather than an hour. Nobody has ever been thought less of for
+asking on Saturday. Arriving on Friday having been stuck since Monday is the thing to avoid.
 
 Every issue names a fallback task: something you can make progress on without waiting for an answer.
-Use it while you wait.
+Use it while you wait, so being blocked never means being idle.
 
 ## Security
 
