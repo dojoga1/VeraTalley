@@ -3,711 +3,711 @@
 
 export const electionAbi = [
   {
-    inputs: [
+    "inputs": [
       {
-        internalType: 'string',
-        name: 'name_',
-        type: 'string',
+        "internalType": "string",
+        "name": "name_",
+        "type": "string"
       },
       {
-        internalType: 'uint64',
-        name: 'startTime_',
-        type: 'uint64',
+        "internalType": "uint64",
+        "name": "startTime_",
+        "type": "uint64"
       },
       {
-        internalType: 'uint64',
-        name: 'endTime_',
-        type: 'uint64',
+        "internalType": "uint64",
+        "name": "endTime_",
+        "type": "uint64"
       },
       {
-        internalType: 'bytes',
-        name: 'electionPublicKey_',
-        type: 'bytes',
+        "internalType": "bytes",
+        "name": "electionPublicKey_",
+        "type": "bytes"
       },
       {
-        internalType: 'address',
-        name: 'administrator',
-        type: 'address',
-      },
+        "internalType": "address",
+        "name": "administrator",
+        "type": "address"
+      }
     ],
-    stateMutability: 'nonpayable',
-    type: 'constructor',
+    "stateMutability": "nonpayable",
+    "type": "constructor"
   },
   {
-    inputs: [],
-    name: 'AlreadyVoted',
-    type: 'error',
+    "inputs": [],
+    "name": "AlreadyVoted",
+    "type": "error"
   },
   {
-    inputs: [],
-    name: 'BatchTooLarge',
-    type: 'error',
+    "inputs": [],
+    "name": "BatchTooLarge",
+    "type": "error"
   },
   {
-    inputs: [],
-    name: 'EmptyPayload',
-    type: 'error',
+    "inputs": [],
+    "name": "EmptyPayload",
+    "type": "error"
   },
   {
-    inputs: [],
-    name: 'EnforcedPause',
-    type: 'error',
+    "inputs": [],
+    "name": "EnforcedPause",
+    "type": "error"
   },
   {
-    inputs: [],
-    name: 'ExpectedPause',
-    type: 'error',
+    "inputs": [],
+    "name": "ExpectedPause",
+    "type": "error"
   },
   {
-    inputs: [],
-    name: 'InvalidWindow',
-    type: 'error',
+    "inputs": [],
+    "name": "InvalidWindow",
+    "type": "error"
   },
   {
-    inputs: [],
-    name: 'MissingPublicKey',
-    type: 'error',
+    "inputs": [],
+    "name": "MissingPublicKey",
+    "type": "error"
   },
   {
-    inputs: [],
-    name: 'NotImplemented',
-    type: 'error',
+    "inputs": [],
+    "name": "NotImplemented",
+    "type": "error"
   },
   {
-    inputs: [],
-    name: 'NotRegistered',
-    type: 'error',
+    "inputs": [],
+    "name": "NotRegistered",
+    "type": "error"
   },
   {
-    inputs: [
+    "inputs": [
       {
-        internalType: 'address',
-        name: 'owner',
-        type: 'address',
-      },
+        "internalType": "address",
+        "name": "owner",
+        "type": "address"
+      }
     ],
-    name: 'OwnableInvalidOwner',
-    type: 'error',
+    "name": "OwnableInvalidOwner",
+    "type": "error"
   },
   {
-    inputs: [
+    "inputs": [
       {
-        internalType: 'address',
-        name: 'account',
-        type: 'address',
-      },
+        "internalType": "address",
+        "name": "account",
+        "type": "address"
+      }
     ],
-    name: 'OwnableUnauthorizedAccount',
-    type: 'error',
+    "name": "OwnableUnauthorizedAccount",
+    "type": "error"
   },
   {
-    inputs: [],
-    name: 'PayloadTooLarge',
-    type: 'error',
+    "inputs": [],
+    "name": "PayloadTooLarge",
+    "type": "error"
   },
   {
-    inputs: [],
-    name: 'RegistrationClosed',
-    type: 'error',
+    "inputs": [],
+    "name": "RegistrationClosed",
+    "type": "error"
   },
   {
-    inputs: [],
-    name: 'VotingClosed',
-    type: 'error',
+    "inputs": [],
+    "name": "VotingClosed",
+    "type": "error"
   },
   {
-    anonymous: false,
-    inputs: [
+    "anonymous": false,
+    "inputs": [
       {
-        indexed: true,
-        internalType: 'address',
-        name: 'voter',
-        type: 'address',
+        "indexed": true,
+        "internalType": "address",
+        "name": "voter",
+        "type": "address"
       },
       {
-        indexed: true,
-        internalType: 'bytes32',
-        name: 'ballotHash',
-        type: 'bytes32',
+        "indexed": true,
+        "internalType": "bytes32",
+        "name": "ballotHash",
+        "type": "bytes32"
       },
       {
-        indexed: true,
-        internalType: 'uint32',
-        name: 'sequence',
-        type: 'uint32',
+        "indexed": true,
+        "internalType": "uint32",
+        "name": "sequence",
+        "type": "uint32"
       },
       {
-        indexed: false,
-        internalType: 'uint64',
-        name: 'castAt',
-        type: 'uint64',
+        "indexed": false,
+        "internalType": "uint64",
+        "name": "castAt",
+        "type": "uint64"
       },
       {
-        indexed: false,
-        internalType: 'bytes',
-        name: 'ciphertext',
-        type: 'bytes',
-      },
+        "indexed": false,
+        "internalType": "bytes",
+        "name": "ciphertext",
+        "type": "bytes"
+      }
     ],
-    name: 'BallotCast',
-    type: 'event',
+    "name": "BallotCast",
+    "type": "event"
   },
   {
-    anonymous: false,
-    inputs: [
+    "anonymous": false,
+    "inputs": [
       {
-        indexed: true,
-        internalType: 'address',
-        name: 'previousOwner',
-        type: 'address',
+        "indexed": true,
+        "internalType": "address",
+        "name": "previousOwner",
+        "type": "address"
       },
       {
-        indexed: true,
-        internalType: 'address',
-        name: 'newOwner',
-        type: 'address',
-      },
+        "indexed": true,
+        "internalType": "address",
+        "name": "newOwner",
+        "type": "address"
+      }
     ],
-    name: 'OwnershipTransferred',
-    type: 'event',
+    "name": "OwnershipTransferred",
+    "type": "event"
   },
   {
-    anonymous: false,
-    inputs: [
+    "anonymous": false,
+    "inputs": [
       {
-        indexed: false,
-        internalType: 'address',
-        name: 'account',
-        type: 'address',
-      },
+        "indexed": false,
+        "internalType": "address",
+        "name": "account",
+        "type": "address"
+      }
     ],
-    name: 'Paused',
-    type: 'event',
+    "name": "Paused",
+    "type": "event"
   },
   {
-    anonymous: false,
-    inputs: [
+    "anonymous": false,
+    "inputs": [
       {
-        indexed: false,
-        internalType: 'address',
-        name: 'account',
-        type: 'address',
-      },
+        "indexed": false,
+        "internalType": "address",
+        "name": "account",
+        "type": "address"
+      }
     ],
-    name: 'Unpaused',
-    type: 'event',
+    "name": "Unpaused",
+    "type": "event"
   },
   {
-    anonymous: false,
-    inputs: [
+    "anonymous": false,
+    "inputs": [
       {
-        indexed: false,
-        internalType: 'address',
-        name: 'voter',
-        type: 'address',
-      },
+        "indexed": false,
+        "internalType": "address",
+        "name": "voter",
+        "type": "address"
+      }
     ],
-    name: 'VoterRevoked',
-    type: 'event',
+    "name": "VoterRevoked",
+    "type": "event"
   },
   {
-    anonymous: false,
-    inputs: [
+    "anonymous": false,
+    "inputs": [
       {
-        indexed: false,
-        internalType: 'address[]',
-        name: 'voters',
-        type: 'address[]',
-      },
+        "indexed": false,
+        "internalType": "address[]",
+        "name": "voters",
+        "type": "address[]"
+      }
     ],
-    name: 'VotersRegistered',
-    type: 'event',
+    "name": "VotersRegistered",
+    "type": "event"
   },
   {
-    inputs: [],
-    name: 'MAX_BATCH',
-    outputs: [
+    "inputs": [],
+    "name": "MAX_BATCH",
+    "outputs": [
       {
-        internalType: 'uint32',
-        name: '',
-        type: 'uint32',
-      },
+        "internalType": "uint32",
+        "name": "",
+        "type": "uint32"
+      }
     ],
-    stateMutability: 'view',
-    type: 'function',
+    "stateMutability": "view",
+    "type": "function"
   },
   {
-    inputs: [],
-    name: 'MAX_PAYLOAD_BYTES',
-    outputs: [
+    "inputs": [],
+    "name": "MAX_PAYLOAD_BYTES",
+    "outputs": [
       {
-        internalType: 'uint256',
-        name: '',
-        type: 'uint256',
-      },
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
     ],
-    stateMutability: 'view',
-    type: 'function',
+    "stateMutability": "view",
+    "type": "function"
   },
   {
-    inputs: [],
-    name: 'ballotCount',
-    outputs: [
+    "inputs": [],
+    "name": "ballotCount",
+    "outputs": [
       {
-        internalType: 'uint32',
-        name: '',
-        type: 'uint32',
-      },
+        "internalType": "uint32",
+        "name": "",
+        "type": "uint32"
+      }
     ],
-    stateMutability: 'view',
-    type: 'function',
+    "stateMutability": "view",
+    "type": "function"
   },
   {
-    inputs: [
+    "inputs": [
       {
-        internalType: 'address',
-        name: 'voter',
-        type: 'address',
-      },
+        "internalType": "address",
+        "name": "voter",
+        "type": "address"
+      }
     ],
-    name: 'ballotOf',
-    outputs: [
+    "name": "ballotOf",
+    "outputs": [
       {
-        internalType: 'bytes32',
-        name: '',
-        type: 'bytes32',
+        "internalType": "bytes32",
+        "name": "",
+        "type": "bytes32"
       },
       {
-        internalType: 'uint64',
-        name: '',
-        type: 'uint64',
-      },
+        "internalType": "uint64",
+        "name": "",
+        "type": "uint64"
+      }
     ],
-    stateMutability: 'view',
-    type: 'function',
+    "stateMutability": "view",
+    "type": "function"
   },
   {
-    inputs: [
+    "inputs": [
       {
-        internalType: 'bytes',
-        name: 'ciphertext',
-        type: 'bytes',
-      },
+        "internalType": "bytes",
+        "name": "ciphertext",
+        "type": "bytes"
+      }
     ],
-    name: 'castBallot',
-    outputs: [],
-    stateMutability: 'nonpayable',
-    type: 'function',
+    "name": "castBallot",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
   },
   {
-    inputs: [],
-    name: 'electionPublicKey',
-    outputs: [
+    "inputs": [],
+    "name": "electionPublicKey",
+    "outputs": [
       {
-        internalType: 'bytes',
-        name: '',
-        type: 'bytes',
-      },
+        "internalType": "bytes",
+        "name": "",
+        "type": "bytes"
+      }
     ],
-    stateMutability: 'view',
-    type: 'function',
+    "stateMutability": "view",
+    "type": "function"
   },
   {
-    inputs: [],
-    name: 'endTime',
-    outputs: [
+    "inputs": [],
+    "name": "endTime",
+    "outputs": [
       {
-        internalType: 'uint64',
-        name: '',
-        type: 'uint64',
-      },
+        "internalType": "uint64",
+        "name": "",
+        "type": "uint64"
+      }
     ],
-    stateMutability: 'view',
-    type: 'function',
+    "stateMutability": "view",
+    "type": "function"
   },
   {
-    inputs: [
+    "inputs": [
       {
-        internalType: 'address',
-        name: 'voter',
-        type: 'address',
-      },
+        "internalType": "address",
+        "name": "voter",
+        "type": "address"
+      }
     ],
-    name: 'isRegistered',
-    outputs: [
+    "name": "isRegistered",
+    "outputs": [
       {
-        internalType: 'bool',
-        name: '',
-        type: 'bool',
-      },
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
     ],
-    stateMutability: 'view',
-    type: 'function',
+    "stateMutability": "view",
+    "type": "function"
   },
   {
-    inputs: [],
-    name: 'isVotingOpen',
-    outputs: [
+    "inputs": [],
+    "name": "isVotingOpen",
+    "outputs": [
       {
-        internalType: 'bool',
-        name: '',
-        type: 'bool',
-      },
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
     ],
-    stateMutability: 'view',
-    type: 'function',
+    "stateMutability": "view",
+    "type": "function"
   },
   {
-    inputs: [],
-    name: 'name',
-    outputs: [
+    "inputs": [],
+    "name": "name",
+    "outputs": [
       {
-        internalType: 'string',
-        name: '',
-        type: 'string',
-      },
+        "internalType": "string",
+        "name": "",
+        "type": "string"
+      }
     ],
-    stateMutability: 'view',
-    type: 'function',
+    "stateMutability": "view",
+    "type": "function"
   },
   {
-    inputs: [],
-    name: 'owner',
-    outputs: [
+    "inputs": [],
+    "name": "owner",
+    "outputs": [
       {
-        internalType: 'address',
-        name: '',
-        type: 'address',
-      },
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
     ],
-    stateMutability: 'view',
-    type: 'function',
+    "stateMutability": "view",
+    "type": "function"
   },
   {
-    inputs: [],
-    name: 'pause',
-    outputs: [],
-    stateMutability: 'nonpayable',
-    type: 'function',
+    "inputs": [],
+    "name": "pause",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
   },
   {
-    inputs: [],
-    name: 'paused',
-    outputs: [
+    "inputs": [],
+    "name": "paused",
+    "outputs": [
       {
-        internalType: 'bool',
-        name: '',
-        type: 'bool',
-      },
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
     ],
-    stateMutability: 'view',
-    type: 'function',
+    "stateMutability": "view",
+    "type": "function"
   },
   {
-    inputs: [
+    "inputs": [
       {
-        internalType: 'address[]',
-        name: 'voters',
-        type: 'address[]',
-      },
+        "internalType": "address[]",
+        "name": "voters",
+        "type": "address[]"
+      }
     ],
-    name: 'registerVoters',
-    outputs: [],
-    stateMutability: 'nonpayable',
-    type: 'function',
+    "name": "registerVoters",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
   },
   {
-    inputs: [],
-    name: 'registeredCount',
-    outputs: [
+    "inputs": [],
+    "name": "registeredCount",
+    "outputs": [
       {
-        internalType: 'uint32',
-        name: '',
-        type: 'uint32',
-      },
+        "internalType": "uint32",
+        "name": "",
+        "type": "uint32"
+      }
     ],
-    stateMutability: 'view',
-    type: 'function',
+    "stateMutability": "view",
+    "type": "function"
   },
   {
-    inputs: [],
-    name: 'renounceOwnership',
-    outputs: [],
-    stateMutability: 'nonpayable',
-    type: 'function',
+    "inputs": [],
+    "name": "renounceOwnership",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
   },
   {
-    inputs: [
+    "inputs": [
       {
-        internalType: 'address',
-        name: 'voter',
-        type: 'address',
-      },
+        "internalType": "address",
+        "name": "voter",
+        "type": "address"
+      }
     ],
-    name: 'revokeVoter',
-    outputs: [],
-    stateMutability: 'nonpayable',
-    type: 'function',
+    "name": "revokeVoter",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
   },
   {
-    inputs: [],
-    name: 'startTime',
-    outputs: [
+    "inputs": [],
+    "name": "startTime",
+    "outputs": [
       {
-        internalType: 'uint64',
-        name: '',
-        type: 'uint64',
-      },
+        "internalType": "uint64",
+        "name": "",
+        "type": "uint64"
+      }
     ],
-    stateMutability: 'view',
-    type: 'function',
+    "stateMutability": "view",
+    "type": "function"
   },
   {
-    inputs: [
+    "inputs": [
       {
-        internalType: 'address',
-        name: 'newOwner',
-        type: 'address',
-      },
+        "internalType": "address",
+        "name": "newOwner",
+        "type": "address"
+      }
     ],
-    name: 'transferOwnership',
-    outputs: [],
-    stateMutability: 'nonpayable',
-    type: 'function',
+    "name": "transferOwnership",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
   },
   {
-    inputs: [],
-    name: 'unpause',
-    outputs: [],
-    stateMutability: 'nonpayable',
-    type: 'function',
-  },
+    "inputs": [],
+    "name": "unpause",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  }
 ] as const
 
 export const electionFactoryAbi = [
   {
-    inputs: [
+    "inputs": [
       {
-        internalType: 'address',
-        name: 'administrator',
-        type: 'address',
-      },
+        "internalType": "address",
+        "name": "administrator",
+        "type": "address"
+      }
     ],
-    stateMutability: 'nonpayable',
-    type: 'constructor',
+    "stateMutability": "nonpayable",
+    "type": "constructor"
   },
   {
-    inputs: [],
-    name: 'InvalidWindow',
-    type: 'error',
+    "inputs": [],
+    "name": "InvalidWindow",
+    "type": "error"
   },
   {
-    inputs: [],
-    name: 'NotImplemented',
-    type: 'error',
+    "inputs": [],
+    "name": "NotImplemented",
+    "type": "error"
   },
   {
-    inputs: [
+    "inputs": [
       {
-        internalType: 'address',
-        name: 'owner',
-        type: 'address',
-      },
+        "internalType": "address",
+        "name": "owner",
+        "type": "address"
+      }
     ],
-    name: 'OwnableInvalidOwner',
-    type: 'error',
+    "name": "OwnableInvalidOwner",
+    "type": "error"
   },
   {
-    inputs: [
+    "inputs": [
       {
-        internalType: 'address',
-        name: 'account',
-        type: 'address',
-      },
+        "internalType": "address",
+        "name": "account",
+        "type": "address"
+      }
     ],
-    name: 'OwnableUnauthorizedAccount',
-    type: 'error',
+    "name": "OwnableUnauthorizedAccount",
+    "type": "error"
   },
   {
-    anonymous: false,
-    inputs: [
+    "anonymous": false,
+    "inputs": [
       {
-        indexed: true,
-        internalType: 'address',
-        name: 'election',
-        type: 'address',
+        "indexed": true,
+        "internalType": "address",
+        "name": "election",
+        "type": "address"
       },
       {
-        indexed: false,
-        internalType: 'string',
-        name: 'name',
-        type: 'string',
+        "indexed": false,
+        "internalType": "string",
+        "name": "name",
+        "type": "string"
       },
       {
-        indexed: false,
-        internalType: 'uint64',
-        name: 'startTime',
-        type: 'uint64',
+        "indexed": false,
+        "internalType": "uint64",
+        "name": "startTime",
+        "type": "uint64"
       },
       {
-        indexed: false,
-        internalType: 'uint64',
-        name: 'endTime',
-        type: 'uint64',
-      },
+        "indexed": false,
+        "internalType": "uint64",
+        "name": "endTime",
+        "type": "uint64"
+      }
     ],
-    name: 'ElectionCreated',
-    type: 'event',
+    "name": "ElectionCreated",
+    "type": "event"
   },
   {
-    anonymous: false,
-    inputs: [
+    "anonymous": false,
+    "inputs": [
       {
-        indexed: true,
-        internalType: 'address',
-        name: 'previousOwner',
-        type: 'address',
+        "indexed": true,
+        "internalType": "address",
+        "name": "previousOwner",
+        "type": "address"
       },
       {
-        indexed: true,
-        internalType: 'address',
-        name: 'newOwner',
-        type: 'address',
-      },
+        "indexed": true,
+        "internalType": "address",
+        "name": "newOwner",
+        "type": "address"
+      }
     ],
-    name: 'OwnershipTransferStarted',
-    type: 'event',
+    "name": "OwnershipTransferStarted",
+    "type": "event"
   },
   {
-    anonymous: false,
-    inputs: [
+    "anonymous": false,
+    "inputs": [
       {
-        indexed: true,
-        internalType: 'address',
-        name: 'previousOwner',
-        type: 'address',
+        "indexed": true,
+        "internalType": "address",
+        "name": "previousOwner",
+        "type": "address"
       },
       {
-        indexed: true,
-        internalType: 'address',
-        name: 'newOwner',
-        type: 'address',
-      },
+        "indexed": true,
+        "internalType": "address",
+        "name": "newOwner",
+        "type": "address"
+      }
     ],
-    name: 'OwnershipTransferred',
-    type: 'event',
+    "name": "OwnershipTransferred",
+    "type": "event"
   },
   {
-    inputs: [],
-    name: 'acceptOwnership',
-    outputs: [],
-    stateMutability: 'nonpayable',
-    type: 'function',
+    "inputs": [],
+    "name": "acceptOwnership",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
   },
   {
-    inputs: [
+    "inputs": [
       {
-        internalType: 'string',
-        name: 'name',
-        type: 'string',
+        "internalType": "string",
+        "name": "name",
+        "type": "string"
       },
       {
-        internalType: 'uint64',
-        name: 'startTime',
-        type: 'uint64',
+        "internalType": "uint64",
+        "name": "startTime",
+        "type": "uint64"
       },
       {
-        internalType: 'uint64',
-        name: 'endTime',
-        type: 'uint64',
+        "internalType": "uint64",
+        "name": "endTime",
+        "type": "uint64"
       },
       {
-        internalType: 'bytes',
-        name: 'electionPublicKey',
-        type: 'bytes',
-      },
+        "internalType": "bytes",
+        "name": "electionPublicKey",
+        "type": "bytes"
+      }
     ],
-    name: 'createElection',
-    outputs: [
+    "name": "createElection",
+    "outputs": [
       {
-        internalType: 'address',
-        name: 'election',
-        type: 'address',
-      },
+        "internalType": "address",
+        "name": "election",
+        "type": "address"
+      }
     ],
-    stateMutability: 'nonpayable',
-    type: 'function',
+    "stateMutability": "nonpayable",
+    "type": "function"
   },
   {
-    inputs: [],
-    name: 'electionCount',
-    outputs: [
+    "inputs": [],
+    "name": "electionCount",
+    "outputs": [
       {
-        internalType: 'uint32',
-        name: '',
-        type: 'uint32',
-      },
+        "internalType": "uint32",
+        "name": "",
+        "type": "uint32"
+      }
     ],
-    stateMutability: 'view',
-    type: 'function',
+    "stateMutability": "view",
+    "type": "function"
   },
   {
-    inputs: [],
-    name: 'getElections',
-    outputs: [
+    "inputs": [],
+    "name": "getElections",
+    "outputs": [
       {
-        internalType: 'address[]',
-        name: '',
-        type: 'address[]',
-      },
+        "internalType": "address[]",
+        "name": "",
+        "type": "address[]"
+      }
     ],
-    stateMutability: 'view',
-    type: 'function',
+    "stateMutability": "view",
+    "type": "function"
   },
   {
-    inputs: [],
-    name: 'owner',
-    outputs: [
+    "inputs": [],
+    "name": "owner",
+    "outputs": [
       {
-        internalType: 'address',
-        name: '',
-        type: 'address',
-      },
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
     ],
-    stateMutability: 'view',
-    type: 'function',
+    "stateMutability": "view",
+    "type": "function"
   },
   {
-    inputs: [],
-    name: 'pendingOwner',
-    outputs: [
+    "inputs": [],
+    "name": "pendingOwner",
+    "outputs": [
       {
-        internalType: 'address',
-        name: '',
-        type: 'address',
-      },
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
     ],
-    stateMutability: 'view',
-    type: 'function',
+    "stateMutability": "view",
+    "type": "function"
   },
   {
-    inputs: [],
-    name: 'renounceOwnership',
-    outputs: [],
-    stateMutability: 'nonpayable',
-    type: 'function',
+    "inputs": [],
+    "name": "renounceOwnership",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
   },
   {
-    inputs: [
+    "inputs": [
       {
-        internalType: 'address',
-        name: 'newOwner',
-        type: 'address',
-      },
+        "internalType": "address",
+        "name": "newOwner",
+        "type": "address"
+      }
     ],
-    name: 'transferOwnership',
-    outputs: [],
-    stateMutability: 'nonpayable',
-    type: 'function',
-  },
+    "name": "transferOwnership",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  }
 ] as const
