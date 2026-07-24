@@ -27,7 +27,12 @@ next-env.d.ts
 artifacts/
 cache/
 types/generated/
-ignition/deployments/chain-31337/
+ignition/deployments/
+
+# A local node hands the same deterministic addresses to everyone, so committing
+# them tells nobody anything and conflicts every time two people deploy locally.
+# deployments/amoy.json IS committed: it is the one record of what is live.
+packages/contracts/deployments/localhost.json
 
 # Prisma
 packages/db/prisma/*.db

@@ -1,0 +1,12 @@
+{
+  "network": "amoy",
+  "chainId": 80002,
+  "factory": null,
+  "owner": null,
+  "isStub": true,
+  "recordedAtBlock": null,
+  "recordedAt": null,
+  "electionCount": 0,
+  "elections": [],
+  "note": "Not deployed yet. Bhargav runs the stub deployment over the weekend, which fills this file in. See deployments/README.md. VT-112 replaces it with the real factory on the Thursday of Week 1."
+}

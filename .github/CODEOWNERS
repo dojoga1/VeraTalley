@@ -22,7 +22,11 @@
 /.gitleaks.toml                          @BHARGAV-GITHUB-USERNAME
 
 # Sub-team ownership.
-/packages/contracts/                     @TIRTHESH @RAHUL @UTKARSH
+# Contracts are Tirthesh (VT-101) and Rahul (VT-102, VT-103). Utkarsh's area is
+# the sealing library, which is TypeScript and lives in packages/ballot.
+/packages/contracts/                     @TIRTHESH @RAHUL
+/packages/contracts/src/stub/            @BHARGAV-GITHUB-USERNAME
+/packages/contracts/deployments/         @BHARGAV-GITHUB-USERNAME
 /packages/ballot/                        @UTKARSH
 /packages/ui/                            @SAKSHI
 /apps/web/app/(voter)/                   @NIHARIKA @ADARSH

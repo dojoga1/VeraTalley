@@ -16,11 +16,14 @@ pragma solidity ^0.8.34;
 ///      wallet that can reach the admin console is the one that owns this.
 interface IElectionFactory {
     /// @notice Emitted for every election created. The indexer backfills from this.
+    /// @dev `election` is indexed so the indexer and the audit dashboard can
+    ///      filter the log for one election without downloading every event
+    ///      ever emitted by the factory.
     /// @param election  Address of the newly deployed election contract.
     /// @param name      Human readable name.
     /// @param startTime Voting opens, inclusive, unix seconds.
     /// @param endTime   Voting closes, exclusive, unix seconds.
-    event ElectionCreated(address election, string name, uint64 startTime, uint64 endTime);
+    event ElectionCreated(address indexed election, string name, uint64 startTime, uint64 endTime);
 
     /// @notice `endTime` was at or before `startTime`.
     error InvalidWindow();
@@ -45,5 +48,9 @@ interface IElectionFactory {
     function electionCount() external view returns (uint32);
 
     /// @notice The administrator wallet. Sign In With Ethereum checks this.
+    /// @dev Ownership transfer is two step: the current owner nominates, and
+    ///      the nominee has to accept. A mistyped address therefore cannot
+    ///      orphan the factory, which would leave every election it created
+    ///      with no administrator and no way to appoint one.
     function owner() external view returns (address);
 }

@@ -15,6 +15,8 @@
   "dependencies": {
     "@noble/ciphers": "^2.2.0",
     "@noble/curves": "^2.2.0",
+    "canonicalize": "^2.1.0",
+    "viem": "^2.55.8",
     "zod": "^4.4.3"
   },
   "devDependencies": {

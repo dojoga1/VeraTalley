@@ -13,7 +13,10 @@
     "typecheck": "hardhat compile --quiet && tsc --noEmit",
     "lint": "solhint 'src/**/*.sol'",
     "gen:abi": "node scripts/export-abi.js",
-    "deploy:amoy": "hardhat ignition deploy ignition/modules/ElectionFactory.ts --network amoy",
+    "deploy:local": "hardhat ignition deploy ignition/modules/Factory.ts --network localhost",
+    "deploy:amoy": "hardhat ignition deploy ignition/modules/Factory.ts --network amoy",
+    "deploy:stub:local": "hardhat ignition deploy ignition/modules/StubFactory.ts --network localhost",
+    "deploy:stub:amoy": "hardhat ignition deploy ignition/modules/StubFactory.ts --network amoy",
     "verify:amoy": "hardhat verify --network amoy"
   },
   "devDependencies": {

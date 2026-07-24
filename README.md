@@ -77,6 +77,28 @@ Then get free test POL from <https://faucet.polygon.technology>, selecting Amoy.
 
 ---
 
+## There is already a factory on Amoy
+
+The address is in [`packages/contracts/deployments/amoy.json`](packages/contracts/deployments/amoy.json).
+Put it in your `.env` as `NEXT_PUBLIC_FACTORY_ADDRESS`.
+
+It is seeded with three elections, one in each state: one **upcoming**, one **open**, one **closed**.
+That is exactly what VT-105 criterion 2 and VT-108 criterion 1 need to test against, so **you are not
+waiting on anybody** to start.
+
+**It is a stub, and that is deliberate.** It answers `getElections()`, `electionCount()`, `owner()`,
+and per election `name()`, `startTime()`, `endTime()`, `ballotCount()` and `isVotingOpen()`. It
+cannot accept a ballot and it has no voter roll, so `ballotCount()` is always 0 and any attempt to
+vote reverts.
+
+VT-112 replaces it with the real contracts on the Thursday of Week 1. **The read interface does not
+change when it does**, which is the entire reason the interfaces were frozen before anyone started.
+Nothing you build against the stub will need rewriting.
+
+Do not import anything from `packages/contracts/src/stub/`. It is deleted when VT-112 lands.
+
+---
+
 ## What is in here
 
 ```
@@ -180,6 +202,10 @@ hour is a five minute problem. Not telling anyone is a serious one.
 
 ---
 
-## Licence
+## Licence and ownership
 
-MIT. See [`LICENSE`](LICENSE).
+MIT, copyright Tom Basey. See [`LICENSE`](LICENSE).
+
+The repository is owned by Tom Basey. You keep authorship of your own commits: MIT means anyone,
+including you, can use, copy and build on this code, and your commit history stays yours to point a
+recruiter at.
