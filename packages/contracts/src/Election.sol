@@ -138,33 +138,40 @@ contract Election is IElectionBallot, IVoterRegistry, IElectionMetadata, Ownable
 
     /// @inheritdoc IVoterRegistry
     function registerVoters(address[] calldata voters) external override onlyOwner {
-        // VT-101. Revert BatchTooLarge above MAX_BATCH. Revert RegistrationClosed
-        // once voting has opened. Skip addresses already on the roll rather than
-        // reverting. Emit VotersRegistered with the whole batch.
-        voters; // silence the unused parameter warning; delete this line
-        revert NotImplemented();
+        if (voters.length > MAX_BATCH) revert BatchTooLarge();
+        if (block.timestamp >= startTime) revert RegistrationClosed();
+
+        for (uint256 i = 0; i < voters.length; i++) {
+            address voter = voters[i];
+
+            if (!_registered[voter]) {
+                _registered[voter] = true;
+                _registeredCount++;
+            }
+        }
+
+        emit VotersRegistered(voters);
     }
 
     /// @inheritdoc IVoterRegistry
     function revokeVoter(address voter) external override onlyOwner {
-        // VT-101. Must not touch _hasVoted, _ballotHash or _castAt: a cast
-        // ballot stays cast. Emit VoterRevoked.
-        voter;
-        revert NotImplemented();
+        if (_registered[voter]) {
+            _registered[voter] = false;
+            _registeredCount--;
+        }
+
+        emit VoterRevoked(voter);
     }
 
     /// @inheritdoc IVoterRegistry
     function isRegistered(address voter) external view override returns (bool) {
-        // VT-101.
-        voter;
-        revert NotImplemented();
+        return _registered[voter];
     }
 
     /// @inheritdoc IVoterRegistry
     function registeredCount() external view override returns (uint32) {
-        // VT-101.
-        revert NotImplemented();
-    }
+        return _registeredCount;
+    }   
 
     // -----------------------------------------------------------------------
     // VT-102, Rahul: casting a ballot
