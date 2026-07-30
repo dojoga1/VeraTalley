@@ -171,41 +171,50 @@ contract Election is IElectionBallot, IVoterRegistry, IElectionMetadata, Ownable
     // -----------------------------------------------------------------------
 
     /// @inheritdoc IElectionBallot
-    function castBallot(bytes calldata ciphertext) external override {
-        // VT-102. Checks, then effects, then the event, in that order, and no
-        // external call anywhere in this function.
-        //
-        // Checks, in this order so the frontend gets predictable errors:
-        //   1. _registered[msg.sender]        else NotRegistered()
-        //   2. !_hasVoted[msg.sender]         else AlreadyVoted()
-        //   3. within [startTime, endTime)    else VotingClosed()
-        //   4. ciphertext.length != 0         else EmptyPayload()
-        //   5. length <= MAX_PAYLOAD_BYTES    else PayloadTooLarge()
-        //   6. not paused                     use whenNotPaused
-        //
-        // Effects: mark voted, store keccak256(ciphertext) and the timestamp,
-        // increment _ballotCount, and use the new value as the sequence so the
-        // first ballot is 1 rather than 0.
-        ciphertext;
-        revert NotImplemented();
+    function castBallot(bytes calldata ciphertext) external override whenNotPaused {
+        // Checks, in this order so the frontend gets predictable errors.
+
+        // 1. Must be on the voter roll.
+        if (!_registered[msg.sender]) revert NotRegistered();
+
+        // 2. One wallet, one ballot.
+        if (_hasVoted[msg.sender]) revert AlreadyVoted();
+
+        // 3. Voting window: includes startTime, excludes endTime.
+        //    i.e. the window is [startTime, endTime).
+        if (block.timestamp < startTime || block.timestamp >= endTime) revert VotingClosed();
+
+        // 4. Must not be empty.
+        if (ciphertext.length == 0) revert EmptyPayload();
+
+        // 5. Must not exceed the maximum payload size.
+        if (ciphertext.length > MAX_PAYLOAD_BYTES) revert PayloadTooLarge();
+
+        // Effects: mark voted, store the hash and timestamp, bump the counter.
+        _hasVoted[msg.sender] = true;
+        bytes32 hash = keccak256(ciphertext);
+        _ballotHash[msg.sender] = hash;
+        _castAt[msg.sender] = uint64(block.timestamp);
+        ++_ballotCount;
+        uint32 sequence = _ballotCount; // first ballot is 1, not 0
+
+        // Event: the ballot log entry.
+        emit BallotCast(msg.sender, hash, sequence, uint64(block.timestamp), ciphertext);
     }
 
     /// @inheritdoc IElectionBallot
     function ballotOf(address voter) external view override returns (bytes32, uint64) {
-        // VT-102.
-        voter;
-        revert NotImplemented();
+        return (_ballotHash[voter], _castAt[voter]);
     }
 
     /// @inheritdoc IElectionBallot
     function ballotCount() external view override returns (uint32) {
-        // VT-102.
-        revert NotImplemented();
+        return _ballotCount;
     }
 
     /// @inheritdoc IElectionBallot
     function isVotingOpen() external view override returns (bool) {
-        // VT-102. True when now is within [startTime, endTime) and not paused.
-        revert NotImplemented();
+        // True when now is within [startTime, endTime) and not paused.
+        return block.timestamp >= startTime && block.timestamp < endTime && !paused();
     }
 }
