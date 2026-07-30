@@ -95,9 +95,7 @@ describe('canonicalJson', () => {
       // Build a copy with reversed key order. Object.entries + reverse +
       // Object.fromEntries gives us a structurally identical object whose
       // internal property order differs.
-      const reversed = Object.fromEntries(
-        Object.entries(ballot).reverse(),
-      ) as unknown as Ballot
+      const reversed = Object.fromEntries(Object.entries(ballot).reverse()) as unknown as Ballot
 
       const shuffled = canonicalJson(reversed)
 
