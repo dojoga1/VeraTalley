@@ -1,0 +1,46 @@
+# Who owns what.
+#
+# This file does two jobs.
+#
+# It notifies the right person automatically when their area changes, so nobody
+# has to remember who to tag.
+#
+# And it is the written record behind the project's most important rule: you
+# change your own work, not somebody else's. If a path below is not yours, do
+# not edit it. Ask the owner, or ask Bhargav. Reading and reviewing other
+# people's code is encouraged; editing it is not. See CONTRIBUTING.md.
+#
+# Replace the placeholder usernames with real GitHub handles after the Friday
+# meeting. Until then GitHub silently ignores lines it cannot resolve, so the
+# file is harmless as it stands but is not doing anything for you yet.
+
+# Anything not matched below.
+*                                       @BHARGAV-GITHUB-USERNAME
+
+# The three frozen contracts. Bhargav reviews every change to these, because a
+# change here breaks other teams silently rather than loudly.
+/packages/contracts/src/interfaces/      @BHARGAV-GITHUB-USERNAME
+/packages/api-spec/openapi.yaml          @BHARGAV-GITHUB-USERNAME
+/packages/ballot/src/schema.ts           @BHARGAV-GITHUB-USERNAME
+
+# CI, secrets handling and branch rules.
+/.github/                                @BHARGAV-GITHUB-USERNAME
+/.gitleaks.toml                          @BHARGAV-GITHUB-USERNAME
+
+# Sub-team ownership.
+# Contracts are Tirthesh (VT-101) and Rahul (VT-102, VT-103). Utkarsh's area is
+# the sealing library, which is TypeScript and lives in packages/ballot.
+/packages/contracts/                     @TIRTHESH @RAHUL
+/packages/contracts/src/stub/            @BHARGAV-GITHUB-USERNAME
+/packages/contracts/deployments/         @BHARGAV-GITHUB-USERNAME
+/packages/ballot/                        @UTKARSH
+/packages/ui/                            @SAKSHI
+/apps/web/app/(voter)/                   @NIHARIKA @ADARSH
+/apps/web/components/wallet/             @ADARSH
+/apps/web/app/(admin)/                   @DIMPLE
+/apps/web/app/(audit)/                   @VARSHITHA
+/apps/web/app/api/                       @ANUSHA
+/packages/db/                            @HET
+/packages/api-spec/                       @ANUSHA
+/apps/indexer/                           @HET
+/infra/                                  @HET

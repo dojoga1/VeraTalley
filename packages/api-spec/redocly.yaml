@@ -1,0 +1,32 @@
+# Linting rules for the REST contract.
+#
+# `pnpm --filter @veratalley/api-spec lint` runs this, and so does CI. Keeping
+# the spec lint-clean is what stops it rotting into documentation nobody trusts.
+extends:
+  - recommended
+
+rules:
+  # Every operation must say what it is called, so generated clients get sensible
+  # method names instead of getApiV1ElectionsAddress.
+  operation-operationId: error
+  operation-operationId-unique: error
+
+  # Every operation must document at least one 4xx. If a call cannot fail, say
+  # so explicitly rather than leaving the frontend to guess.
+  operation-4xx-response: error
+
+  # Every operation must state its security, including `security: []` for the
+  # public ones. Silence here is how an endpoint accidentally ships unprotected.
+  security-defined: error
+
+  # Descriptions are for humans and cost nothing to write.
+  operation-summary: error
+  tag-description: error
+
+  info-license: error
+
+  # Off until Week 4. This rule rejects localhost as well as example.com, and
+  # until the server exists localhost is the only true answer. Turn it back on
+  # when the production URL is added, because at that point it is catching a
+  # real mistake rather than describing where we actually are.
+  no-server-example.com: off

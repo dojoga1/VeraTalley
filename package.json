@@ -1,0 +1,32 @@
+{
+  "name": "veratalley",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Verifiable blockchain voting on Polygon Amoy",
+  "license": "MIT",
+  "packageManager": "pnpm@10.15.0",
+  "engines": {
+    "node": ">=22.0.0",
+    "pnpm": ">=10.0.0"
+  },
+  "scripts": {
+    "dev": "pnpm --filter @veratalley/web dev",
+    "build": "pnpm -r run --if-present build",
+    "lint": "pnpm -r run --if-present lint",
+    "typecheck": "pnpm -r run --if-present typecheck",
+    "test": "pnpm -r run --if-present test",
+    "gen": "pnpm gen:api && pnpm gen:abi",
+    "gen:api": "pnpm --filter @veratalley/api-spec gen",
+    "gen:abi": "pnpm --filter @veratalley/contracts gen:abi",
+    "gen:check": "pnpm gen && git diff --exit-code --stat",
+    "db:migrate": "pnpm --filter @veratalley/db migrate",
+    "db:seed": "pnpm --filter @veratalley/db seed",
+    "db:studio": "pnpm --filter @veratalley/db studio",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
+  },
+  "devDependencies": {
+    "prettier": "^3.9.6",
+    "typescript": "^5.9.3"
+  }
+}

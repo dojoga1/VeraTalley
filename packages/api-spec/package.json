@@ -1,0 +1,20 @@
+{
+  "name": "@veratalley/api-spec",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "OpenAPI 3.1 contract and generated types. Owned by PT-2.",
+  "exports": {
+    ".": "./types.ts"
+  },
+  "scripts": {
+    "gen": "openapi-typescript openapi.yaml --output types.ts",
+    "lint": "redocly lint openapi.yaml",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@redocly/cli": "^2.40.0",
+    "openapi-typescript": "^7.13.0",
+    "typescript": "^5.9.3"
+  }
+}

@@ -1,0 +1,100 @@
+name: Task
+description: A piece of work sized to one sitting, four to six hours.
+title: "VT-nnn: "
+labels: []
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Issues are written by Bhargav on the Thursday before the week starts.
+        If you are filling this in yourself, that is fine, but check the
+        Definition of Ready at the bottom before assigning it to anyone.
+
+  - type: textarea
+    id: goal
+    attributes:
+      label: Goal
+      description: One or two sentences. What will exist when this is done?
+    validations:
+      required: true
+
+  - type: textarea
+    id: why
+    attributes:
+      label: Why it matters
+      description: >
+        What is blocked without this, or what does it make possible? Someone
+        who understands why their work matters makes better decisions when the
+        issue does not cover the case in front of them.
+    validations:
+      required: true
+
+  - type: textarea
+    id: where
+    attributes:
+      label: Where
+      description: The files and folders this touches.
+      placeholder: |
+        packages/contracts/src/Election.sol
+        tests in packages/contracts/test/
+    validations:
+      required: true
+
+  - type: textarea
+    id: what
+    attributes:
+      label: What to build
+      description: A numbered list. Specific enough that two people would build the same thing.
+    validations:
+      required: true
+
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Acceptance criteria
+      description: >
+        Numbered, and each one testable. "Works well" is not a criterion.
+        "A batch of 251 reverts with BatchTooLarge()" is.
+    validations:
+      required: true
+
+  - type: textarea
+    id: testing
+    attributes:
+      label: How to test it
+      description: The commands to run, or the steps to walk through by hand.
+    validations:
+      required: true
+
+  - type: textarea
+    id: stuck
+    attributes:
+      label: If you get stuck
+      description: >
+        Name the buddy to email first, and a fallback task that makes real
+        progress without waiting for an answer. Nobody should ever be idle
+        waiting on a reply.
+    validations:
+      required: true
+
+  - type: input
+    id: hours
+    attributes:
+      label: Estimate in hours
+      placeholder: "5"
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: dod
+    attributes:
+      label: Definition of Done
+      options:
+        - label: Merged into `develop` through a pull request with one approval
+        - label: CI green
+        - label: Tests cover the failure cases, not only the success case
+        - label: No new TypeScript, ESLint or solhint errors
+        - label: "If UI: works with a keyboard alone, and every control has a label"
+        - label: "If it touches an interface or the API spec: types regenerated and committed"
+        - label: Demonstrated working, with a link or screenshot in the comments

@@ -1,0 +1,78 @@
+title = "VeraTalley secret scanning"
+
+# Start from gitleaks' own rule set, then add the things specific to us.
+[extend]
+useDefault = true
+
+# ---------------------------------------------------------------------------
+# Project specific rules
+# ---------------------------------------------------------------------------
+
+# Every group below is non-capturing, `(?:...)` rather than `(...)`. With a
+# capturing group gitleaks reports the captured text as the secret, so an
+# allowlist checked against the secret ends up testing a fragment such as "ql"
+# instead of the whole match, and silently never fires.
+
+[[rules]]
+id = "ethereum-private-key"
+description = "Ethereum private key, 32 bytes of hex"
+regex = '''(?i)\b(?:0x)?[a-f0-9]{64}\b'''
+keywords = ["private", "key", "deployer", "mnemonic"]
+path = '''(?i)\.(?:ts|tsx|js|mjs|cjs|json|ya?ml|sol|env|md|sh)$'''
+[rules.allowlist]
+regexTarget = "line"
+regexes = [
+  # A keccak256 hash, a ballot hash, a transaction hash and a 32 byte nonce all
+  # look exactly like a private key to a regular expression. These are the
+  # contexts where a 64 character hex string is expected and harmless.
+  '''(?i)(?:hash|nonce|salt|digest|txhash|blockhash|selector|bytes32|commit|sha|keccak)''',
+  '''(?i)public_?key''',
+]
+
+[[rules]]
+id = "database-url-with-password"
+description = "Database connection string carrying a real password"
+regex = '''(?i)postgres(?:ql)?://[^:\s]+:[^@\s]+@[^/\s]+'''
+keywords = ["postgres", "postgresql"]
+[rules.allowlist]
+regexTarget = "line"
+regexes = [
+  # The local development credentials in .env.example, docker-compose and the
+  # docs are deliberately public and identical on every machine. Not a secret.
+  '''veratalley:veratalley@localhost''',
+  '''postgres:postgres@localhost''',
+]
+
+# ---------------------------------------------------------------------------
+# Global allowlist
+# ---------------------------------------------------------------------------
+
+[allowlist]
+description = "Files that legitimately contain key-shaped strings"
+
+paths = [
+  # The template. It carries variable names and no values, which is the point.
+  '''\.env\.example$''',
+  # Lockfiles are full of integrity hashes.
+  '''pnpm-lock\.yaml$''',
+  # Compiler output. Bytecode is a very long hex string.
+  '''artifacts/''',
+  '''\.next/''',
+  '''node_modules/''',
+  # Generated ABI and API types.
+  '''packages/contracts/abi/''',
+  '''packages/api-spec/types\.ts$''',
+]
+
+regexes = [
+  # The worked example nonce and election public key from the handbook. It is a
+  # made up value that appears in the documentation and in the skeleton tests on
+  # purpose. Listed without the 0x prefix so it matches in Solidity's hex"..."
+  # form as well as the JSON form.
+  '''8b1d4ac9f0e2571b3d6a84c5e0f9b27d1a4c6e8f0b2d5a7c9e1f3b6d8a0c2e4f''',
+  # The worked example ballot hash and transaction hash from the handbook.
+  '''7a03e91c4d5b28f60a7c3e15d9b47c082a5e63f19d0b4c8a2e7f501639bd8c4a''',
+  '''4d1a7c0e5b3f89a2d6c14e70b8f35a9c2e46d081b7f3a5c9e0d2b4f68a1c3e57''',
+  # The zero address.
+  '''0x0{40}''',
+]

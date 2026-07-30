@@ -1,0 +1,26 @@
+{
+  "name": "@veratalley/ballot",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Ballot schema, canonicalisation and sealing. Owned by BT-3.",
+  "exports": {
+    ".": "./src/index.ts",
+    "./schema": "./src/schema.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@noble/ciphers": "^2.2.0",
+    "@noble/curves": "^2.2.0",
+    "canonicalize": "^2.1.0",
+    "viem": "^2.55.8",
+    "zod": "^4.4.3"
+  },
+  "devDependencies": {
+    "typescript": "^5.9.3",
+    "vitest": "^3.2.7"
+  }
+}

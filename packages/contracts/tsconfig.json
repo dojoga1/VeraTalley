@@ -1,0 +1,24 @@
+{
+  "compilerOptions": {
+    "lib": ["es2023"],
+    "module": "node20",
+    "moduleResolution": "node16",
+    "target": "es2023",
+    "strict": true,
+    "skipLibCheck": true,
+    "noEmit": true,
+    "types": ["node"],
+    "verbatimModuleSyntax": true
+  },
+  "include": [
+    "hardhat.config.ts",
+    "test/**/*.ts",
+    "ignition/**/*.ts",
+    "scripts/**/*.ts",
+    // Hardhat writes one .d.ts per contract here at compile time, and they are
+    // what make `viem.deployContract('ElectionFactory')` return a typed
+    // contract instead of `unknown`. They are generated, so they are gitignored
+    // and the typecheck script compiles first to make sure they exist.
+    "artifacts/**/*.d.ts"
+  ]
+}

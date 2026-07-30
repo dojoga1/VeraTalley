@@ -1,0 +1,22 @@
+node_modules
+.next
+dist
+build
+out
+coverage
+artifacts
+cache
+pnpm-lock.yaml
+
+# Generated files. Every one of these must be listed here, because CI runs
+# `pnpm gen` and fails if the result differs from what is committed. If Prettier
+# reformats a generated file after the generator wrote it, the two can never
+# agree and the check fails on every pull request no matter what anyone does.
+packages/api-spec/types.ts
+packages/contracts/abi
+packages/contracts/types/generated
+packages/contracts/deployments
+
+# The original prototype, kept unchanged for reference. Reformatting it would
+# produce a large diff over code nobody is going to edit. See prototype/README.md
+prototype
