@@ -76,7 +76,7 @@ jobs:
           fi
 
       - name: Test
-        run: pnpm test
+        run: pnpm test -- --snapshot-check
 
       - name: Build
         run: pnpm build
