@@ -79,7 +79,7 @@ jobs:
         run: pnpm test
 
       - name: Check gas snapshots
-        run: pnpm --filter @veratalley/contracts run test:solidity -- --snapshot-check
+        run: pnpm --filter @veratalley/contracts exec hardhat test solidity --snapshot-check
 
       - name: Build
         run: pnpm build
