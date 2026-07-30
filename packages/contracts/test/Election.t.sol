@@ -211,4 +211,35 @@ contract ElectionTest is Test {
             );
         }
     }
+
+
+    function test_RevokeAfterVotingDoesNotAlterBallot() public {
+        address[] memory voters = new address[](1);
+        voters[0] = ALICE;
+
+        vm.prank(ADMIN);
+        election.registerVoters(voters);
+
+        vm.warp(START);
+
+        bytes memory payload = bytes("alice-ballot");
+        bytes32 expectedHash = keccak256(payload);
+
+        vm.prank(ALICE);
+        election.castBallot(payload);
+
+        (bytes32 hashBefore, uint64 castAtBefore) = election.ballotOf(ALICE);
+
+        vm.prank(ADMIN);
+        election.revokeVoter(ALICE);
+
+        require(!election.isRegistered(ALICE), "Alice should be revoked");
+        require(election.registeredCount() == 0, "registered count should be zero");
+
+        (bytes32 hashAfter, uint64 castAtAfter) = election.ballotOf(ALICE);
+
+        require(hashBefore == expectedHash, "hash before mismatch");
+        require(hashAfter == expectedHash, "hash changed after revoke");
+        require(castAtAfter == castAtBefore, "timestamp changed after revoke");
+    }
 }
