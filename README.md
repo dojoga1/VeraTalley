@@ -65,40 +65,43 @@ reply within 12 hours including at the weekend. Do not spend four hours fighting
 
 ### Add the Amoy network to MetaMask
 
-| Field          | Value                          |
-| -------------- | ------------------------------ |
-| Network name   | Polygon Amoy                   |
-| Chain ID       | `80002`                        |
-| Currency       | `POL`                          |
-| Block explorer | `https://amoy.polygonscan.com` |
-| RPC URL        | Ask Bhargav                    |
+| Field          | Value                           |
+| -------------- | ------------------------------- |
+| Network name   | Polygon Amoy                    |
+| Chain ID       | `80002`                         |
+| Currency       | `POL`                           |
+| Block explorer | `https://amoy.polygonscan.com`  |
+| RPC URL        | `https://polygon-amoy.drpc.org` |
 
-The old public endpoint `rpc-amoy.polygon.technology` was switched off on 17 July 2026. Anything
-pointing at it is already broken. Bhargav holds the provider key and nobody else needs it.
+`https://polygon-amoy.drpc.org` is dRPC's free public Amoy endpoint; it responds today and is fine for
+reading and light use. It is **rate limited**, so for real work (deploying, load) create your own free
+dRPC key at <https://drpc.org> and use that instead. The old public endpoint
+`rpc-amoy.polygon.technology` was **switched off in July 2026** — anything pointing at it is broken; do
+not use it.
 
 Then get free test POL from <https://faucet.polygon.technology>, selecting Amoy.
 
 ---
 
-## There is already a factory on Amoy
+## The real factory is live on Amoy
 
-The address is in [`packages/contracts/deployments/amoy.json`](packages/contracts/deployments/amoy.json).
-Put it in your `.env` as `NEXT_PUBLIC_FACTORY_ADDRESS`.
+The **real, fully functional** `ElectionFactory` is deployed on Polygon Amoy — it registers voters and
+accepts encrypted ballots. Its address and the three election addresses are in
+[`packages/contracts/deployments/amoy.json`](packages/contracts/deployments/amoy.json) (`"isStub": false`).
+Put the factory address in your `.env` as `NEXT_PUBLIC_FACTORY_ADDRESS`.
 
-It is seeded with three elections, one in each state: one **upcoming**, one **open**, one **closed**.
-That is exactly what VT-105 criterion 2 and VT-108 criterion 1 need to test against, so **you are not
-waiting on anybody** to start.
+It is seeded with three elections, one in each state: one **upcoming**, one **open**, one **closed** —
+what VT-105 and VT-108 need to read against. A real encrypted ballot has already been cast and verified
+end to end; see [`HANDOVER.md`](HANDOVER.md).
 
-**It is a stub, and that is deliberate.** It answers `getElections()`, `electionCount()`, `owner()`,
-and per election `name()`, `startTime()`, `endTime()`, `ballotCount()` and `isVotingOpen()`. It
-cannot accept a ballot and it has no voter roll, so `ballotCount()` is always 0 and any attempt to
-vote reverts.
+> The factory is owned by the original deployer's wallet and is **administratively frozen** (the owner
+> has left with the key), so you cannot create elections or register voters on _this_ deployment. It
+> stays permanently readable as a demonstration artifact. To run your own, deploy a fresh factory with
+> your own wallet — one Ignition command, see [`HANDOVER.md`](HANDOVER.md).
 
-VT-112 replaces it with the real contracts on the Thursday of Week 1. **The read interface does not
-change when it does**, which is the entire reason the interfaces were frozen before anyone started.
-Nothing you build against the stub will need rewriting.
-
-Do not import anything from `packages/contracts/src/stub/`. It is deleted when VT-112 lands.
+The earlier read-only **stub** factory is retired. Its Solidity lives in `packages/contracts/src/stub/`
+and is kept only for local testing (`pnpm --filter @veratalley/contracts deploy:stub:local`); it is not
+what is deployed and nothing in the app should import from it.
 
 ---
 

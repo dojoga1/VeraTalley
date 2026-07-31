@@ -46,26 +46,28 @@ tested. Contracts suite: 56 Solidity/integration tests. Ballot library: 22 tests
 
 ## Work delivered but not yet merged (open PRs)
 
-Both are real work that is close. Precise remediation is in each PR thread.
+Four open PRs, all real work. None is merged; precise remediation is in each PR thread.
 
+- **[PR #21](https://github.com/dojoga1/VeraTalley/pull/21) — VT-105 elections list page (Niharika Yerra).**
+  CI is green and the active code is a working client-side elections list (`'use client'` + wagmi
+  `useReadContract`), which is why it builds where VT-108 did not. **But** the file carries ~420 lines of
+  commented-out earlier drafts around the ~170 live lines — that dead code should be deleted before
+  merge. Functionally close; needs a cleanup pass. Issue [#5](https://github.com/dojoga1/VeraTalley/issues/5).
+- **[PR #22](https://github.com/dojoga1/VeraTalley/pull/22) — VT-109 database / Docker / Prisma (Het Desai).**
+  Prisma schema, an initial migration, seed, and `docker-compose.yml`. CI **fails on the formatting
+  step** (`pnpm format:check`); otherwise the shape is right. Run `pnpm format`, commit, push. Issue
+  [#9](https://github.com/dojoga1/VeraTalley/issues/9).
+- **[PR #20](https://github.com/dojoga1/VeraTalley/pull/20) — VT-108 public audit dashboard (Varshitha Kondeti).**
+  Three routes plus the data layer; structure is good and it likely renders in `pnpm dev`. It fails the
+  production build for three fixable reasons: files not Prettier-formatted; the audit pages statically
+  prerender on-chain reads at build time (need `export const dynamic = 'force-dynamic'`); and the reads
+  point at the deprecated public RPC `rpc-amoy.polygon.technology` instead of the configured provider.
+  Issue [#8](https://github.com/dojoga1/VeraTalley/issues/8).
 - **[PR #17](https://github.com/dojoga1/VeraTalley/pull/17) — gas-snapshot regression guard (Rahul Patil).**
   The guard itself works (verified: it fails the build on a gas increase). It cannot merge as-is because
   the branch is the pre-squash `feature/VT-102`, which conflicts add/add with `develop`, and its
   committed snapshot predates VT-101/VT-103. Fix: rebuild as a small PR on top of current `develop` and
   regenerate the snapshot. Tracked by issue [#16](https://github.com/dojoga1/VeraTalley/issues/16).
-- **[PR #20](https://github.com/dojoga1/VeraTalley/pull/20) — VT-108 public audit dashboard (Varshitha Kondeti).**
-  Three routes plus the data layer; the structure is good and it likely renders in `pnpm dev`. It fails
-  the production build for three fixable reasons: files not Prettier-formatted; the audit pages
-  statically prerender on-chain reads at build time (need `export const dynamic = 'force-dynamic'`); and
-  the reads point at the deprecated public RPC `rpc-amoy.polygon.technology` instead of the configured
-  provider. Tracked by issue [#8](https://github.com/dojoga1/VeraTalley/issues/8).
-
-## Work in progress, not on `develop`
-
-- **VT-109 database / Docker / Prisma (Het Desai)** — on branch `VT-109-database-docker`; not yet
-  opened as a PR into `develop`. Issue [#9](https://github.com/dojoga1/VeraTalley/issues/9).
-- **VT-105 elections list page (Niharika Yerra)** — reported finished but no branch has been pushed to
-  the remote. Issue [#5](https://github.com/dojoga1/VeraTalley/issues/5).
 
 ## What is not built
 
@@ -103,10 +105,44 @@ can register voters and accept encrypted ballots. The old read-only stub at `0x3
 The record of what is deployed lives in
 [`packages/contracts/deployments/amoy.json`](packages/contracts/deployments/amoy.json) (`"isStub": false`).
 
-Contract **source is verified on [Sourcify](https://sourcify.dev)** (which block explorers read from)
-for the factory and the open election — anyone can read the source. Getting the green "Contract" tab on
-Polygonscan itself additionally needs a free PolygonScan API key: set `POLYGONSCAN_API_KEY` and run
-`hardhat verify --network amoy <address> <constructor-args>`.
+### Verified source — use the Sourcify links, not Polygonscan
+
+The **canonical verified source is on Sourcify** — the links in the table above:
+[factory](https://sourcify.dev/server/repo-ui/80002/0x37e0e0B9D334944b1AeB9B7F7Bd8C6e242B22dD7) and
+[open election](https://sourcify.dev/server/repo-ui/80002/0xd5f0a299bEf00C7A7923768537B178981d1b32E6).
+Anyone can read the full Solidity there and confirm it matches the deployed bytecode.
+
+**Polygonscan itself still shows only bytecode** ("Are you the contract creator?") — its Amoy UI does
+not display the Sourcify match, so do not conclude from Polygonscan that the contracts are unverified;
+they are, on Sourcify. To get the green "Contract" tab on Polygonscan too, someone with a free
+`POLYGONSCAN_API_KEY` can run `hardhat verify --network amoy <address> <constructor-args>`.
+
+## Administration — the deployed factory is frozen
+
+**Read this before trying to register a voter or create an election on the addresses above — you
+can't, and here is why.**
+
+- The deployed factory is owned by the **original deployer's wallet** (`0x3C79…4061`), which has left
+  with the key. It is `Ownable2Step` and ownership was **not** transferred, so it is **administratively
+  frozen**: `createElection`, `registerVoters` and `pause` are owner-only and no one else holds the key.
+- That is intentional. What remains is a **permanent, read-only demonstration artifact** — anyone in
+  the world can read the elections, the ballot log, and the verified source, and check the end-to-end
+  proof below. That is its whole purpose now.
+- **To actually run elections, deploy your own factory with your own wallet.** It is one command:
+
+  ```bash
+  # from packages/contracts, with your own funded wallet in a gitignored .env
+  pnpm --filter @veratalley/contracts exec hardhat ignition deploy ignition/modules/Factory.ts --network amoy
+  ```
+
+  Then create elections and register voters with
+  [`scripts/seed-and-register.ts`](packages/contracts/scripts/seed-and-register.ts) and cast a verified
+  ballot with [`scripts/cast-and-verify.ts`](packages/contracts/scripts/cast-and-verify.ts). Full steps
+  in [`packages/contracts/deployments/README.md`](packages/contracts/deployments/README.md).
+
+- **Generate a fresh election keypair** for your deployment (`generateElectionKeypair()` from
+  `@veratalley/ballot`). The demo keypair published below works **only** for the frozen demo elections;
+  never reuse it.
 
 ### End-to-end proof — the Week 3 milestone, done
 

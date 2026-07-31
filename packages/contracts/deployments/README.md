@@ -6,71 +6,51 @@ and the indexer all start from the factory address in it and discover everything
 **It is written by a script, not by hand.** A deployment record that somebody typed out is a record
 that is wrong the first time there is a typo, and three other people read this file.
 
-## Current state
+## Current state — the real factory is live
 
-`factory` is `null` and `isStub` is `true`. Nothing is deployed yet.
+`amoy.json` records the **real** `ElectionFactory` (`"isStub": false`), deployed by VT-112 with three
+elections (upcoming / open / closed) and registered voters on the open one. See
+[`../../../HANDOVER.md`](../../../HANDOVER.md) for the addresses, explorer/Sourcify links, and the
+end-to-end proof transaction.
 
-## Deploying the weekend stub
+**That deployment is administratively frozen** — it is owned by the original deployer's wallet, which
+has left. You cannot register voters or create elections on it. It stays live as a read-only
+demonstration. To do real work, deploy your own (below).
 
-Bhargav only. It needs the deployer private key, which lives in one password manager.
+## Deploy your own factory
 
-The stub is a throwaway that answers the read calls and nothing else. It exists so VT-105 and VT-108
-have real on-chain data to build against on Monday morning and do not spend week one of five waiting
-on a contracts developer. VT-112 replaces it on the Thursday.
-
-Try it locally first. No key, no network, no test tokens:
-
-```bash
-npx hardhat node
-```
-
-then, in another terminal:
+The factory config reads `RPC_URL_AMOY` and `DEPLOYER_PRIVATE_KEY`. Hardhat's `configVariable` takes
+**environment variables in preference to the keystore**, so the simplest path is a gitignored `.env`
+at the repo root with those two values (a fresh wallet you control, funded from
+<https://faucet.polygon.technology>). Then, from `packages/contracts`:
 
 ```bash
-pnpm --filter @veratalley/contracts deploy:stub:local
+set -a; . ../../.env; set +a
+# deploy the factory
+pnpm --filter @veratalley/contracts exec hardhat ignition deploy ignition/modules/Factory.ts --network amoy
+# create the three elections + register voters (edit the pubkey / voters as needed)
+FACTORY_ADDRESS=0xNEW ELECTION_PUBLIC_KEY=0x... pnpm exec tsx scripts/seed-and-register.ts
+# record what is actually on chain (NO VERATALLEY_STUB flag → isStub false)
+node scripts/record-deployment.js amoy 0xNEW "$RPC_URL_AMOY"
 ```
 
-Then against Amoy. The deployer wallet needs test POL from <https://faucet.polygon.technology>,
-choosing Amoy:
+Generate a **fresh** election keypair with `generateElectionKeypair()` from `@veratalley/ballot` — the
+published demo keypair works only for the demo elections. Then cast a verified ballot with
+`scripts/cast-and-verify.ts`. **The RPC URL and keys never go in this file.**
+
+Verify the source on Sourcify (works without an API key):
+`hardhat verify --network amoy <address> <constructor-args>`. Polygonscan's own "Contract" tab
+additionally needs a free `POLYGONSCAN_API_KEY`.
+
+## The retired stub (local testing only)
+
+The stub in `../src/stub/` is a throwaway that answers read calls but cannot accept a ballot. It is no
+longer deployed anywhere; it is kept only for local, no-network testing:
 
 ```bash
-npx hardhat keystore set RPC_URL_AMOY
-npx hardhat keystore set DEPLOYER_PRIVATE_KEY
-pnpm --filter @veratalley/contracts deploy:stub:amoy
+npx hardhat node                                            # one terminal
+pnpm --filter @veratalley/contracts deploy:stub:local        # another
 ```
-
-Take the printed `StubElectionFactory` address and record it:
-
-```bash
-cd packages/contracts
-VERATALLEY_STUB=1 node scripts/record-deployment.js amoy 0xYOUR_ADDRESS "$RPC_URL_AMOY"
-```
-
-The script reads the elections back off the chain rather than trusting what the deploy printed, so
-the file describes what is actually there. Check the output shows one `upcoming`, one `open` and one
-`closed`, then commit `amoy.json`.
-
-Last, put the factory address in your `.env` as `NEXT_PUBLIC_FACTORY_ADDRESS`, and send it to the
-team. **The RPC URL is not in this file and must never be, because it carries a provider key.**
-
-## VT-112, replacing the stub with the real thing
-
-Same shape, once VT-101, VT-102 and VT-103 are merged:
-
-```bash
-pnpm --filter @veratalley/contracts deploy:amoy
-pnpm --filter @veratalley/contracts verify:amoy 0xNEW_ADDRESS
-node scripts/record-deployment.js amoy 0xNEW_ADDRESS "$RPC_URL_AMOY"
-```
-
-Note the missing `VERATALLEY_STUB=1`, which is what flips `isStub` to `false`.
-
-Then create the three seeded elections through the real factory, register every developer's wallet
-from the tracker's Roster sheet as a test voter on the open one, and email the team the new address
-with the explorer link.
-
-Because the read interface never moved, VT-105 and VT-108 keep working without either developer
-changing a line. That is the whole reason the interfaces were frozen before anyone started.
 
 ## Why `localhost.json` is not here
 
