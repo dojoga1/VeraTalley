@@ -47,7 +47,6 @@
 // //   )
 // // }
 
-
 // // function ElectionCard({
 // //   address,
 // // }: {
@@ -64,7 +63,6 @@
 // //     chainId: 80002,
 // //   })
 
-
 // //   const {
 // //     data: isVotingOpen,
 // //     isLoading: statusLoading,
@@ -75,7 +73,6 @@
 // //     chainId: 80002,
 // //   })
 
-
 // //   const {
 // //     data: startTime,
 // //   } = useReadContract({
@@ -85,7 +82,6 @@
 // //     chainId: 80002,
 // //   })
 
-
 // //   const {
 // //     data: endTime,
 // //   } = useReadContract({
@@ -94,7 +90,6 @@
 // //     functionName: 'endTime',
 // //     chainId: 80002,
 // //   })
-
 
 // //   let status = 'Loading...'
 
@@ -110,7 +105,6 @@
 // //     }
 // //   }
 
-
 // //   return (
 // //     <div
 // //       style={{
@@ -125,11 +119,9 @@
 // //         {nameLoading ? 'Loading...' : name}
 // //       </h2>
 
-
 // //       <p>
 // //         Status: {status}
 // //       </p>
-
 
 // //       <p>
 // //         Start Time:
@@ -140,7 +132,6 @@
 // //         }
 // //       </p>
 
-
 // //       <p>
 // //         End Time:
 // //         <br />
@@ -150,13 +141,11 @@
 // //         }
 // //       </p>
 
-
 // //       <p>
 // //         Contract Address:
 // //         <br />
 // //         {address}
 // //       </p>
-
 
 // //       <Link
 // //         href={`/elections/${address}`}
@@ -179,9 +168,6 @@
 // //   )
 // // }
 
-
-
-
 // 'use client'
 
 // import Link from 'next/link'
@@ -201,7 +187,6 @@
 //     chainId: 80002,
 //   })
 
-
 //   if (isLoading) {
 //     return (
 //       <main>
@@ -213,7 +198,6 @@
 //       </main>
 //     )
 //   }
-
 
 //   if (error) {
 //     return (
@@ -242,11 +226,9 @@
 //     )
 //   }
 
-
 //   return (
 //     <main>
 //       <h1>Elections</h1>
-
 
 //       {!elections || elections.length === 0 ? (
 //         <p>No elections yet</p>
@@ -261,8 +243,6 @@
 //     </main>
 //   )
 // }
-
-
 
 // function ElectionCard({
 //   address,
@@ -279,7 +259,6 @@
 //     chainId: 80002,
 //   })
 
-
 //   const {
 //     data: startTime,
 //   } = useReadContract({
@@ -288,7 +267,6 @@
 //     functionName: 'startTime',
 //     chainId: 80002,
 //   })
-
 
 //   const {
 //     data: endTime,
@@ -299,16 +277,13 @@
 //     chainId: 80002,
 //   })
 
-
 //   let status = 'Loading...'
-
 
 //   if (startTime && endTime) {
 //     const now = Math.floor(Date.now() / 1000)
 
 //     const start = Number(startTime)
 //     const end = Number(endTime)
-
 
 //     if (now < start) {
 //       status = 'Upcoming'
@@ -318,7 +293,6 @@
 //       status = 'Closed'
 //     }
 //   }
-
 
 //   return (
 //     <Link
@@ -340,11 +314,9 @@
 //         {name ?? 'Loading...'}
 //       </h2>
 
-
 //       <p>
 //         Status: {status}
 //       </p>
-
 
 //       <p>
 //         Start Time:
@@ -356,7 +328,6 @@
 //         }
 //       </p>
 
-
 //       <p>
 //         End Time:
 //         <br />
@@ -367,7 +338,6 @@
 //         }
 //       </p>
 
-
 //       <p>
 //         Contract Address:
 //         <br />
@@ -377,8 +347,6 @@
 //     </Link>
 //   )
 // }
-
-
 
 // function ElectionSkeleton() {
 //   return (
@@ -422,8 +390,6 @@
 //     </div>
 //   )
 // }
-
-
 
 'use client'
 
@@ -492,20 +458,14 @@ export default function ElectionsPage() {
       {!elections || elections.length === 0 ? (
         <p>No elections yet</p>
       ) : (
-        elections.map((address) => (
-          <ElectionCard key={address} address={address} />
-        ))
+        elections.map((address) => <ElectionCard key={address} address={address} />)
       )}
     </main>
   )
 }
 
 // ✅ ELECTION CARD
-function ElectionCard({
-  address,
-}: {
-  address: `0x${string}`
-}) {
+function ElectionCard({ address }: { address: `0x${string}` }) {
   const { data: name } = useReadContract({
     address,
     abi: electionAbi,

@@ -1,28 +1,17 @@
 'use client'
 
-import {
-  useReadContract,
-  useAccount,
-  useConnect
-} from 'wagmi'
+import { useReadContract, useAccount, useConnect } from 'wagmi'
 
 import { electionAbi } from '../../../../../../packages/contracts/abi'
 import { useParams } from 'next/navigation'
 
 export default function ElectionDetailsPage() {
-
   const params = useParams()
   const address = params.address as `0x${string}`
 
-  const {
-    address: walletAddress,
-    isConnected,
-  } = useAccount()
+  const { address: walletAddress, isConnected } = useAccount()
 
-  const {
-    connectors,
-    connect,
-  } = useConnect()
+  const { connectors, connect } = useConnect()
 
   const { data: name } = useReadContract({
     address,
@@ -45,10 +34,7 @@ export default function ElectionDetailsPage() {
     chainId: 80002,
   })
 
-  const {
-    data: isRegistered,
-    isLoading: registrationLoading,
-  } = useReadContract({
+  const { data: isRegistered, isLoading: registrationLoading } = useReadContract({
     address,
     abi: electionAbi,
     functionName: 'isRegistered',
@@ -94,17 +80,13 @@ export default function ElectionDetailsPage() {
         <p>
           Start Time:
           <br />
-          {startTime
-            ? new Date(Number(startTime) * 1000).toLocaleString()
-            : 'Loading...'}
+          {startTime ? new Date(Number(startTime) * 1000).toLocaleString() : 'Loading...'}
         </p>
 
         <p>
           End Time:
           <br />
-          {endTime
-            ? new Date(Number(endTime) * 1000).toLocaleString()
-            : 'Loading...'}
+          {endTime ? new Date(Number(endTime) * 1000).toLocaleString() : 'Loading...'}
         </p>
 
         <p>
