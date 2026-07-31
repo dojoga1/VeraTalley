@@ -31,9 +31,6 @@ contract ElectionFactory is IElectionFactory, Ownable2Step {
     /// @dev Every election ever created, in creation order.
     address[] private _elections;
 
-    /// @notice Placeholder while this function is unimplemented.
-    /// @dev Delete this error once VT-103 is merged.
-    error NotImplemented();
 
     constructor(address administrator) Ownable(administrator) {}
 
@@ -44,21 +41,18 @@ contract ElectionFactory is IElectionFactory, Ownable2Step {
         uint64 endTime,
         bytes calldata electionPublicKey
     ) external override onlyOwner returns (address election) {
-        // VT-103.
-        //   1. Revert InvalidWindow() if endTime <= startTime. Note that
-        //      Election's own constructor also checks this. Check here too so
-        //      the caller gets the factory's error rather than a failed deploy.
-        //   2. Deploy `new Election(name, startTime, endTime, electionPublicKey,
-        //      owner())`. Pass owner(), not msg.sender, so that transferring the
-        //      factory later does not leave elections behind.
-        //   3. Push the address onto _elections.
-        //   4. Emit ElectionCreated.
-        //   5. Return the address.
-        name;
-        startTime;
-        endTime;
-        electionPublicKey;
-        revert NotImplemented();
+        if (endTime <= startTime) {
+            revert InvalidWindow();
+        }
+
+        Election newElection = new Election(name, startTime, endTime, electionPublicKey, owner());
+        election = address(newElection);
+
+        _elections.push(election);
+
+        emit ElectionCreated(election, name, startTime, endTime);
+
+        return election;
     }
 
     /// @inheritdoc IElectionFactory

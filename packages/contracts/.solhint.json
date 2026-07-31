@@ -8,7 +8,7 @@
     "reason-string": "off",
     "gas-custom-errors": "off",
 
-    "use-natspec": ["warn", { "missingAuthor": false }],
+    "use-natspec": "warn",
 
     "immutable-vars-naming": "off",
 
