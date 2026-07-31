@@ -2,6 +2,9 @@
 
 Verifiable voting on a public blockchain.
 
+> **Picking this project up?** Start with **[HANDOVER.md](HANDOVER.md)** — it covers what is built and
+> merged, what is deployed on Amoy, what is not done, and the operational gotchas, all in one page.
+
 Two guarantees, and they are the whole product:
 
 1. **Anyone can confirm a ballot was cast.** If we announce 1,200 ballots, anyone can open a public
