@@ -73,6 +73,14 @@ regexes = [
   # The worked example ballot hash and transaction hash from the handbook.
   '''7a03e91c4d5b28f60a7c3e15d9b47c082a5e63f19d0b4c8a2e7f501639bd8c4a''',
   '''4d1a7c0e5b3f89a2d6c14e70b8f35a9c2e46d081b7f3a5c9e0d2b4f68a1c3e57''',
+  # VT-112 demonstration values, published on purpose in HANDOVER.md. These are
+  # a throwaway election keypair for a public test network and the transaction
+  # hash of the demo ballot. They are not secrets: the whole point is that anyone
+  # can use them to decrypt the demo ballots and verify the pipeline. The real
+  # deployer key is NOT here and stays flagged if ever committed.
+  '''8b399d3fecb0927f26d8ffb968be679c0c7cb4eebf08a7e80b395f6da6a23f71''', # election public key
+  '''b60b2896ef330057c9ca26a5c74125807370ea6f479ef3e7b66f870907912e68''', # election private key (demo)
+  '''57b9deb83b4affd48ed1de8b43f9bb3ad25fc0d8c10d5bbcbcd89943cd8358ad''', # ballot cast tx hash
   # The zero address.
   '''0x0{40}''',
 ]
