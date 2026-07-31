@@ -80,33 +80,76 @@ Each maps to an open issue:
 | Public audit dashboard (in PR #20)           | [#8 VT-108](https://github.com/dojoga1/VeraTalley/issues/8)   |
 | Database, Docker Compose, Prisma schema      | [#9 VT-109](https://github.com/dojoga1/VeraTalley/issues/9)   |
 | REST API skeleton & OpenAPI spec             | [#10 VT-110](https://github.com/dojoga1/VeraTalley/issues/10) |
-| Deploy the real factory to Amoy              | [#12 VT-112](https://github.com/dojoga1/VeraTalley/issues/12) |
+
+(VT-112, deploying the real factory to Amoy, is **done** — see below.)
 
 Also not built and not yet ticketed for Week 1: the **event indexer** (reads `BallotCast` into
 PostgreSQL), the **tally CLI** (decrypts sealed ballots and certifies the count), and the **server /
 NAS deployment** behind HTTPS. These are the Weeks 2–5 roadmap in the handbook.
 
-## What is deployed on Amoy
+## What is deployed on Amoy — the real factory is live
 
-**Only a read-only stub factory is live.** It answers the read calls the frontend needs (list
-elections, read metadata) but **cannot register a voter or accept a ballot** — `castBallot` reverts.
-It exists so the frontend has real on-chain data to build against.
+**VT-112 is complete.** The real, fully functional `ElectionFactory` is deployed on Polygon Amoy and
+can register voters and accept encrypted ballots. The old read-only stub at `0x3e63…7522` is
+**retired** — it is no longer referenced by anything; ignore it.
 
-| Thing                                         | Address                                                                                                                         |
-| --------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------- |
-| Stub factory                                  | [`0x3e63D1600Cff1ce0b55f5AA740E4645a47e17522`](https://amoy.polygonscan.com/address/0x3e63D1600Cff1ce0b55f5AA740E4645a47e17522) |
-| Election — upcoming (Riverside Ward Council)  | [`0xc4b7caf5078fc816fdcc97d04a73253ff10232f1`](https://amoy.polygonscan.com/address/0xc4b7caf5078fc816fdcc97d04a73253ff10232f1) |
-| Election — open (UTA Student Government)      | [`0xd85a4c9929dd5300c40f8d6816c79b4bf02e03ad`](https://amoy.polygonscan.com/address/0xd85a4c9929dd5300c40f8d6816c79b4bf02e03ad) |
-| Election — closed (Housing Society Committee) | [`0x6d9c0a25c4cd2542b83415374e9cefe6db1a68e3`](https://amoy.polygonscan.com/address/0x6d9c0a25c4cd2542b83415374e9cefe6db1a68e3) |
+| Thing                                                      | Address                                                                                                                                                                                                                          |
+| ---------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **ElectionFactory (real)**                                 | [`0x37e0e0B9D334944b1AeB9B7F7Bd8C6e242B22dD7`](https://amoy.polygonscan.com/address/0x37e0e0B9D334944b1AeB9B7F7Bd8C6e242B22dD7) · [source](https://sourcify.dev/server/repo-ui/80002/0x37e0e0B9D334944b1AeB9B7F7Bd8C6e242B22dD7) |
+| Election — upcoming (Riverside Ward Council, Autumn 2026)  | [`0x24221a8974355f750063e8963F62624d25aBE84a`](https://amoy.polygonscan.com/address/0x24221a8974355f750063e8963F62624d25aBE84a)                                                                                                  |
+| Election — open (UTA Student Government 2026)              | [`0xd5f0a299bEf00C7A7923768537B178981d1b32E6`](https://amoy.polygonscan.com/address/0xd5f0a299bEf00C7A7923768537B178981d1b32E6) · [source](https://sourcify.dev/server/repo-ui/80002/0xd5f0a299bEf00C7A7923768537B178981d1b32E6) |
+| Election — closed (Housing Society Committee, Summer 2026) | [`0xB5FFbEF279766E67156ECFB8562aE455a1eF830B`](https://amoy.polygonscan.com/address/0xB5FFbEF279766E67156ECFB8562aE455a1eF830B)                                                                                                  |
 
 The record of what is deployed lives in
-[`packages/contracts/deployments/amoy.json`](packages/contracts/deployments/amoy.json) (`"isStub": true`).
+[`packages/contracts/deployments/amoy.json`](packages/contracts/deployments/amoy.json) (`"isStub": false`).
 
-**The real factory is not deployed.** The contract code is complete on `develop`, so it can be. This is
-VT-112 ([#12](https://github.com/dojoga1/VeraTalley/issues/12)): deploy the Ignition module to Amoy,
-seed three elections, run `scripts/record-deployment.js` to update `amoy.json`, verify the source on
-polygonscan, and commit. It needs the deployer key from the Hardhat keystore and a person to enter the
-keystore password. See [`packages/contracts/deployments/README.md`](packages/contracts/deployments/README.md).
+Contract **source is verified on [Sourcify](https://sourcify.dev)** (which block explorers read from)
+for the factory and the open election — anyone can read the source. Getting the green "Contract" tab on
+Polygonscan itself additionally needs a free PolygonScan API key: set `POLYGONSCAN_API_KEY` and run
+`hardhat verify --network amoy <address> <constructor-args>`.
+
+### End-to-end proof — the Week 3 milestone, done
+
+A real encrypted ballot has been cast on the public chain and verified end to end:
+
+- **Transaction:** [`0x57b9deb83b4affd48ed1de8b43f9bb3ad25fc0d8c10d5bbcbcd89943cd8358ad`](https://amoy.polygonscan.com/tx/0x57b9deb83b4affd48ed1de8b43f9bb3ad25fc0d8c10d5bbcbcd89943cd8358ad) — block 43718952, sequence 1.
+
+What it demonstrates, in one transaction anyone in the world can inspect: a ballot was encrypted in the
+browser with the election's public key, recorded on a public blockchain where anyone can confirm it was
+cast (the `BallotCast` event) but nobody can read the choices (the on-chain payload is opaque
+ciphertext), and then — reading that ciphertext back **from the chain's event log, not local memory** —
+decrypted with the election private key to recover the voter's exact selections, byte-identical to what
+was sealed. That is the whole product, proven on a real network. Originally the Week 3 milestone; done.
+
+Reproduce it: [`scripts/cast-and-verify.ts`](packages/contracts/scripts/cast-and-verify.ts) (the elections
+were created and voters registered by [`scripts/seed-and-register.ts`](packages/contracts/scripts/seed-and-register.ts)).
+
+### Demonstration election keypair — TEST NETWORK ONLY
+
+The elections above are sealed to this X25519 keypair. It is published **on purpose** so anyone can
+decrypt the demo ballots and independently verify the pipeline.
+
+- **Public key:** `0x8b399d3fecb0927f26d8ffb968be679c0c7cb4eebf08a7e80b395f6da6a23f71`
+- **Private key:** `0xb60b2896ef330057c9ca26a5c74125807370ea6f479ef3e7b66f870907912e68`
+
+> ⚠️ **Throwaway demonstration key for a public test network. Never reuse it for a real election.** In a
+> real election the authority generates a fresh keypair and keeps the private key offline until tally.
+
+### Registered test voters (open election)
+
+Already registered on the open election, so they can cast a ballot:
+
+| Voter                           | Address                                      |
+| ------------------------------- | -------------------------------------------- |
+| Tirthesh Kode                   | `0x814FCF38b8a17EF6B992e9A2Fa794cEB0c55881a` |
+| Niharika Yerra                  | `0x292cEC3f1668750E17a9AbDF2f8831Bbbb41D623` |
+| Adarsh Rao                      | `0xAABE5c852137c4660A0a309f56e923fadA4A9C77` |
+| Varshitha Reddy Kondeti         | `0x38627B4Cf65daF162087438e6E03dd4C3a8aDE40` |
+| Het Desai                       | `0xF6C8cc0075b238d8b39e791e877Ff2E7B4f51deC` |
+| Deployer (cast the demo ballot) | `0x3c79c97d2fa8c95eafe130fbb13a03f339a74061` |
+
+The deployer has already voted (sequence 1), so it will now revert `AlreadyVoted`; the other five can
+still cast one ballot each.
 
 ## The three frozen contracts
 
@@ -156,7 +199,12 @@ This is roughly where real systems such as Helios sit, and far ahead of "trust t
 - **CI** runs two jobs on every PR: `Lint, typecheck, test, build` and `Secret scan` (gitleaks over full
   history). Fork PRs require a maintainer to approve the workflow run before CI starts.
 - **Secrets** (deployer key, RPC URL, session secret) live in the Hardhat keystore and a password
-  manager, never in the repo. See [`SECURITY.md`](SECURITY.md).
+  manager, never in the repo. See [`SECURITY.md`](SECURITY.md). Note: the keystore password was not
+  recorded, so the keystore is effectively locked; the deployer key's master copy is in the owner's
+  password manager. VT-112 was deployed by placing `RPC_URL_AMOY` and `DEPLOYER_PRIVATE_KEY` in a
+  gitignored `.env` — Hardhat's `configVariable` reads environment variables in preference to the
+  keystore, so no keystore password is needed for a redeploy done that way. The demo used dRPC's public
+  Amoy endpoint `https://polygon-amoy.drpc.org`.
 
 ## Repository map
 

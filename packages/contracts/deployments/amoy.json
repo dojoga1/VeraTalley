@@ -1,38 +1,38 @@
 {
   "network": "amoy",
   "chainId": 80002,
-  "factory": "0x3e63D1600Cff1ce0b55f5AA740E4645a47e17522",
+  "factory": "0x37e0e0B9D334944b1AeB9B7F7Bd8C6e242B22dD7",
   "owner": "0x3c79c97d2fa8c95eafe130fbb13a03f339a74061",
-  "isStub": true,
-  "recordedAtBlock": "43058421",
-  "recordedAt": "2026-07-24T07:07:05.919Z",
+  "isStub": false,
+  "recordedAtBlock": "43718995",
+  "recordedAt": "2026-07-31T22:37:18.962Z",
   "electionCount": 3,
   "elections": [
     {
-      "address": "0xc4b7caf5078fc816fdcc97d04a73253ff10232f1",
+      "address": "0x24221a8974355f750063e8963f62624d25abe84a",
       "name": "Riverside Ward Council, Autumn 2026",
-      "startTime": 1785481447,
-      "endTime": 1786086247,
-      "startTimeIso": "2026-07-31T07:04:07.000Z",
-      "endTimeIso": "2026-08-07T07:04:07.000Z",
+      "startTime": 1786142049,
+      "endTime": 1786746849,
+      "startTimeIso": "2026-08-07T22:34:09.000Z",
+      "endTimeIso": "2026-08-14T22:34:09.000Z",
       "statusAtRecording": "upcoming"
     },
     {
-      "address": "0xd85a4c9929dd5300c40f8d6816c79b4bf02e03ad",
+      "address": "0xd5f0a299bef00c7a7923768537b178981d1b32e6",
       "name": "UTA Student Government 2026",
-      "startTime": 1784790247,
-      "endTime": 1785395047,
-      "startTimeIso": "2026-07-23T07:04:07.000Z",
-      "endTimeIso": "2026-07-30T07:04:07.000Z",
+      "startTime": 1785537369,
+      "endTime": 1786142049,
+      "startTimeIso": "2026-07-31T22:36:09.000Z",
+      "endTimeIso": "2026-08-07T22:34:09.000Z",
       "statusAtRecording": "open"
     },
     {
-      "address": "0x6d9c0a25c4cd2542b83415374e9cefe6db1a68e3",
+      "address": "0xb5ffbef279766e67156ecfb8562ae455a1ef830b",
       "name": "Housing Society Committee, Summer 2026",
-      "startTime": 1783667047,
-      "endTime": 1784271847,
-      "startTimeIso": "2026-07-10T07:04:07.000Z",
-      "endTimeIso": "2026-07-17T07:04:07.000Z",
+      "startTime": 1784327649,
+      "endTime": 1784932449,
+      "startTimeIso": "2026-07-17T22:34:09.000Z",
+      "endTimeIso": "2026-07-24T22:34:09.000Z",
       "statusAtRecording": "closed"
     }
   ]
