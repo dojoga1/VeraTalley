@@ -215,6 +215,61 @@ hour is a five minute problem. Not telling anyone is a serious one.
 
 ---
 
+## Database Setup
+
+### Option 1: Running from the repository root (recommended)
+
+Start the PostgreSQL database and Adminer:
+
+```bash
+docker compose up -d
+```
+
+Run the Prisma migrations:
+
+```bash
+pnpm --filter @veratalley/db migrate
+```
+
+Seed the database with sample data:
+
+```bash
+pnpm --filter @veratalley/db seed
+```
+
+---
+
+### Option 2: Running from `packages/db`
+
+If you're already inside the `packages/db` directory, use the following commands instead:
+
+Start the PostgreSQL database and Adminer (run from the repository root):
+
+```bash
+docker compose up -d
+```
+
+Then, from `packages/db`, run the migrations:
+
+```bash
+pnpm migrate
+```
+
+Seed the database:
+
+```bash
+pnpm seed
+```
+
+After completing these steps:
+
+- PostgreSQL will be running on `localhost:5432`.
+- Adminer will be available at `http://localhost:8080`.
+- The database schema will be created.
+- Two sample elections and twenty sample ballots (along with related data) will be available for local development.
+
+---
+
 ## Licence and ownership
 
 MIT, copyright Tom Basey. See [`LICENSE`](LICENSE).
