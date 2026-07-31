@@ -146,6 +146,9 @@ importers:
       '@types/node':
         specifier: ^22.20.1
         version: 22.20.1
+      '@veratalley/ballot':
+        specifier: workspace:*
+        version: link:../ballot
       forge-std:
         specifier: github:foundry-rs/forge-std#v1.9.4
         version: https://codeload.github.com/foundry-rs/forge-std/tar.gz/1eea5bae12ae557d589f9f0f0edae2faa47cb262
@@ -155,6 +158,9 @@ importers:
       solhint:
         specifier: ^6.0.1
         version: 6.2.3(typescript@5.9.3)
+      tsx:
+        specifier: ^4.20.6
+        version: 4.23.1
       typescript:
         specifier: ^5.9.3
         version: 5.9.3
