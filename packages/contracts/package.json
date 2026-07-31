@@ -11,7 +11,7 @@
     "test:solidity": "hardhat test solidity",
     "coverage": "hardhat coverage",
     "typecheck": "hardhat compile --quiet && tsc --noEmit",
-    "lint": "solhint 'src/**/*.sol'",
+    "lint": "solhint src/**/*.sol",
     "gen:abi": "node scripts/export-abi.js",
     "deploy:local": "hardhat ignition deploy ignition/modules/Factory.ts --network localhost",
     "deploy:amoy": "hardhat ignition deploy ignition/modules/Factory.ts --network amoy",
