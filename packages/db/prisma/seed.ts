@@ -52,15 +52,15 @@ async function main() {
     await prisma.voter.upsert({
       where: {
         electionAddress_walletAddress: {
-          electionAddress: "0x1111111111111111111111111111111111111111",
-          walletAddress: `0x10000000000000000000000000000000000000${i.toString().padStart(2, "0")}`,
+          electionAddress: '0x1111111111111111111111111111111111111111',
+          walletAddress: `0x10000000000000000000000000000000000000${i.toString().padStart(2, '0')}`,
         },
       },
       update: {},
       create: {
-        electionAddress: "0x1111111111111111111111111111111111111111",
-        walletAddress: `0x10000000000000000000000000000000000000${i.toString().padStart(2, "0")}`,
-        registeredAtBlock: "100000",
+        electionAddress: '0x1111111111111111111111111111111111111111',
+        walletAddress: `0x10000000000000000000000000000000000000${i.toString().padStart(2, '0')}`,
+        registeredAtBlock: '100000',
         revokedAtBlock: null,
       },
     })
@@ -70,25 +70,22 @@ async function main() {
     await prisma.voter.upsert({
       where: {
         electionAddress_walletAddress: {
-          electionAddress: "0x2222222222222222222222222222222222222222",
-          walletAddress: `0x20000000000000000000000000000000000000${i.toString().padStart(2, "0")}`,
+          electionAddress: '0x2222222222222222222222222222222222222222',
+          walletAddress: `0x20000000000000000000000000000000000000${i.toString().padStart(2, '0')}`,
         },
       },
       update: {},
       create: {
-        electionAddress: "0x2222222222222222222222222222222222222222",
-        walletAddress: `0x20000000000000000000000000000000000000${i.toString().padStart(2, "0")}`,
-        registeredAtBlock: "200000",
+        electionAddress: '0x2222222222222222222222222222222222222222',
+        walletAddress: `0x20000000000000000000000000000000000000${i.toString().padStart(2, '0')}`,
+        registeredAtBlock: '200000',
         revokedAtBlock: null,
       },
     })
   }
 
-  console.log("✅ Seeded voters")
-
+  console.log('✅ Seeded voters')
 }
-
-
 
 main()
   .catch((error: unknown) => {
