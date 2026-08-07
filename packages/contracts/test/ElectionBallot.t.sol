@@ -314,12 +314,7 @@ contract ElectionBallotTest is Test {
         bytes memory payload = _payload(200);
 
         vm.prank(VOTER);
-        uint256 gasBefore = gasleft();
         election.castBallot(payload);
-        uint256 gasUsed = gasBefore - gasleft();
-
-        // Log the gas used so it appears in the test output / snapshot.
-        emit log_named_uint("gas_castBallot_200bytes", gasUsed);
     }
 }
 
