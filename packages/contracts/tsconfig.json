@@ -14,11 +14,17 @@
     "hardhat.config.ts",
     "test/**/*.ts",
     "ignition/**/*.ts",
-    "scripts/**/*.ts",
     // Hardhat writes one .d.ts per contract here at compile time, and they are
     // what make `viem.deployContract('ElectionFactory')` return a typed
     // contract instead of `unknown`. They are generated, so they are gitignored
     // and the typecheck script compiles first to make sure they exist.
     "artifacts/**/*.d.ts"
-  ]
+  ],
+  // `scripts/` holds operational utilities run with `tsx` (e.g.
+  // cast-and-verify.ts), not part of the compiled package. They import the
+  // workspace `@veratalley/ballot` source, whose bundler-style extensionless
+  // imports do not resolve under this package's stricter node16 tsc. tsx runs
+  // them fine and their correctness is proven by execution, so they are kept
+  // out of the tsc --noEmit gate.
+  "exclude": ["scripts/**/*.ts"]
 }

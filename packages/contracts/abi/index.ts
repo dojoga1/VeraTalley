@@ -502,11 +502,6 @@ export const electionFactoryAbi = [
     "type": "error"
   },
   {
-    "inputs": [],
-    "name": "NotImplemented",
-    "type": "error"
-  },
-  {
     "inputs": [
       {
         "internalType": "address",

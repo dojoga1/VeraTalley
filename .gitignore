@@ -27,7 +27,7 @@ next-env.d.ts
 artifacts/
 cache/
 types/generated/
-ignition/deployments/
+**/ignition/deployments/
 
 # A local node hands the same deterministic addresses to everyone, so committing
 # them tells nobody anything and conflicts every time two people deploy locally.
@@ -58,3 +58,7 @@ Thumbs.db
 *.log
 npm-debug.log*
 pnpm-debug.log*
+
+
+# AI Agents
+CLAUDE.md

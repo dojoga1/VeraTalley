@@ -2,6 +2,9 @@
 
 Verifiable voting on a public blockchain.
 
+> **Picking this project up?** Start with **[HANDOVER.md](HANDOVER.md)** — it covers what is built and
+> merged, what is deployed on Amoy, what is not done, and the operational gotchas, all in one page.
+
 Two guarantees, and they are the whole product:
 
 1. **Anyone can confirm a ballot was cast.** If we announce 1,200 ballots, anyone can open a public
@@ -62,40 +65,43 @@ reply within 12 hours including at the weekend. Do not spend four hours fighting
 
 ### Add the Amoy network to MetaMask
 
-| Field          | Value                          |
-| -------------- | ------------------------------ |
-| Network name   | Polygon Amoy                   |
-| Chain ID       | `80002`                        |
-| Currency       | `POL`                          |
-| Block explorer | `https://amoy.polygonscan.com` |
-| RPC URL        | Ask Bhargav                    |
+| Field          | Value                           |
+| -------------- | ------------------------------- |
+| Network name   | Polygon Amoy                    |
+| Chain ID       | `80002`                         |
+| Currency       | `POL`                           |
+| Block explorer | `https://amoy.polygonscan.com`  |
+| RPC URL        | `https://polygon-amoy.drpc.org` |
 
-The old public endpoint `rpc-amoy.polygon.technology` was switched off on 17 July 2026. Anything
-pointing at it is already broken. Bhargav holds the provider key and nobody else needs it.
+`https://polygon-amoy.drpc.org` is dRPC's free public Amoy endpoint; it responds today and is fine for
+reading and light use. It is **rate limited**, so for real work (deploying, load) create your own free
+dRPC key at <https://drpc.org> and use that instead. The old public endpoint
+`rpc-amoy.polygon.technology` was **switched off in July 2026** — anything pointing at it is broken; do
+not use it.
 
 Then get free test POL from <https://faucet.polygon.technology>, selecting Amoy.
 
 ---
 
-## There is already a factory on Amoy
+## The real factory is live on Amoy
 
-The address is in [`packages/contracts/deployments/amoy.json`](packages/contracts/deployments/amoy.json).
-Put it in your `.env` as `NEXT_PUBLIC_FACTORY_ADDRESS`.
+The **real, fully functional** `ElectionFactory` is deployed on Polygon Amoy — it registers voters and
+accepts encrypted ballots. Its address and the three election addresses are in
+[`packages/contracts/deployments/amoy.json`](packages/contracts/deployments/amoy.json) (`"isStub": false`).
+Put the factory address in your `.env` as `NEXT_PUBLIC_FACTORY_ADDRESS`.
 
-It is seeded with three elections, one in each state: one **upcoming**, one **open**, one **closed**.
-That is exactly what VT-105 criterion 2 and VT-108 criterion 1 need to test against, so **you are not
-waiting on anybody** to start.
+It is seeded with three elections, one in each state: one **upcoming**, one **open**, one **closed** —
+what VT-105 and VT-108 need to read against. A real encrypted ballot has already been cast and verified
+end to end; see [`HANDOVER.md`](HANDOVER.md).
 
-**It is a stub, and that is deliberate.** It answers `getElections()`, `electionCount()`, `owner()`,
-and per election `name()`, `startTime()`, `endTime()`, `ballotCount()` and `isVotingOpen()`. It
-cannot accept a ballot and it has no voter roll, so `ballotCount()` is always 0 and any attempt to
-vote reverts.
+> The factory is owned by the original deployer's wallet and is **administratively frozen** (the owner
+> has left with the key), so you cannot create elections or register voters on _this_ deployment. It
+> stays permanently readable as a demonstration artifact. To run your own, deploy a fresh factory with
+> your own wallet — one Ignition command, see [`HANDOVER.md`](HANDOVER.md).
 
-VT-112 replaces it with the real contracts on the Thursday of Week 1. **The read interface does not
-change when it does**, which is the entire reason the interfaces were frozen before anyone started.
-Nothing you build against the stub will need rewriting.
-
-Do not import anything from `packages/contracts/src/stub/`. It is deleted when VT-112 lands.
+The earlier read-only **stub** factory is retired. Its Solidity lives in `packages/contracts/src/stub/`
+and is kept only for local testing (`pnpm --filter @veratalley/contracts deploy:stub:local`); it is not
+what is deployed and nothing in the app should import from it.
 
 ---
 
@@ -212,6 +218,61 @@ will catch most of it, but it is a safety net and not a permission slip.
 If you commit a secret by accident, **say so immediately**. Deleting it in the next commit does not
 remove it: it is still in the history, and the value has to be rotated. Telling someone within the
 hour is a five minute problem. Not telling anyone is a serious one.
+
+---
+
+## Database Setup
+
+### Option 1: Running from the repository root (recommended)
+
+Start the PostgreSQL database and Adminer:
+
+```bash
+docker compose up -d
+```
+
+Run the Prisma migrations:
+
+```bash
+pnpm --filter @veratalley/db migrate
+```
+
+Seed the database with sample data:
+
+```bash
+pnpm --filter @veratalley/db seed
+```
+
+---
+
+### Option 2: Running from `packages/db`
+
+If you're already inside the `packages/db` directory, use the following commands instead:
+
+Start the PostgreSQL database and Adminer (run from the repository root):
+
+```bash
+docker compose up -d
+```
+
+Then, from `packages/db`, run the migrations:
+
+```bash
+pnpm migrate
+```
+
+Seed the database:
+
+```bash
+pnpm seed
+```
+
+After completing these steps:
+
+- PostgreSQL will be running on `localhost:5432`.
+- Adminer will be available at `http://localhost:8080`.
+- The database schema will be created.
+- Two sample elections and twenty sample ballots (along with related data) will be available for local development.
 
 ---
 

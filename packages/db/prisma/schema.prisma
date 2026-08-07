@@ -36,3 +36,63 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+
+model Election {
+  address             String   @id
+  name                String
+  startTime           DateTime
+  endTime             DateTime
+  publicKey           String
+  createdAtBlock      String
+
+  ballots             Ballot[]
+  voters              Voter[]
+  indexerState        IndexerState?
+}
+
+
+model Ballot {
+  id                String   @id @default(cuid())
+
+  electionAddress   String
+  sequence          Int
+
+  ballotHash        String
+  voterAddress      String
+  ciphertext        String
+
+  txHash            String
+  blockNumber       String
+  castAt            DateTime
+
+  election          Election @relation(fields: [electionAddress], references: [address])
+
+  @@unique([electionAddress, sequence])
+  @@unique([electionAddress, voterAddress])
+  @@index([txHash])
+}
+
+
+model Voter {
+  id                 String    @id @default(cuid())
+
+  electionAddress    String
+  walletAddress      String
+
+  registeredAtBlock  String
+  revokedAtBlock     String?
+
+  election           Election @relation(fields: [electionAddress], references: [address])
+
+  @@unique([electionAddress, walletAddress])
+}
+
+model IndexerState {
+  id                 String   @id @default(cuid())
+
+  electionAddress    String   @unique
+  lastProcessedBlock String
+
+  election           Election @relation(fields: [electionAddress], references: [address])
+}
